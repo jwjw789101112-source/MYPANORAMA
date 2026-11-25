@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MY PANORAMA LIVE · 공주신관 경남아너스빌(가칭) AI 분양 웹 샘플</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=Noto+Serif+KR:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#13202b; --ink2:#2b3a47; --mute:#6b7782; --line:#e2ddd2; --paper:#f7f3ec; --card:#fffdf9;
+  --river:#1f5c63; --river2:#2f7f88; --gold:#b8914a; --gold2:#e9d6ad; --warn:#a4462f; --ok:#2e7d55;
+  --serif:'Noto Serif KR',serif; --sans:'IBM Plex Sans KR',system-ui,sans-serif;
+  --r:14px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+button,input,select{font-family:inherit;font-size:inherit;color:inherit}
+a{color:var(--river)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+/* top bar */
+.top{position:sticky;top:0;z-index:30;background:rgba(19,32,43,.97);color:#f3ede2;backdrop-filter:blur(6px)}
+.top .row{display:flex;align-items:center;gap:16px;height:58px}
+.brand{display:flex;flex-direction:column;line-height:1.1;cursor:pointer}
+.brand b{font-family:var(--serif);font-size:17px;letter-spacing:.06em}
+.brand small{font-size:11px;color:#b9b2a3;letter-spacing:.02em}
+.mock{font-size:10.5px;border:1px solid var(--gold);color:var(--gold2);padding:2px 7px;border-radius:20px;white-space:nowrap}
+.spacer{flex:1}
+.lead{display:flex;align-items:center;gap:8px;font-size:12px;color:#cfc7b8;white-space:nowrap}
+.lead .bar{width:90px;height:6px;background:#33424f;border-radius:4px;overflow:hidden}
+.lead .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),#f0c97a);transition:width .5s}
+.lead b{color:#f6e4bb;font-weight:600;min-width:20px;text-align:right}
+nav.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;border-top:1px solid #23323f}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs a{flex:none;padding:11px 14px 10px;color:#b9b2a3;text-decoration:none;font-size:13.5px;border-bottom:2px solid transparent;white-space:nowrap}
+nav.tabs a .k{font-size:10px;letter-spacing:.12em;color:#7f8a93;margin-right:6px}
+nav.tabs a.on{color:#fff;border-bottom-color:var(--gold)}
+nav.tabs a.on .k{color:var(--gold2)}
+
+/* views */
+section.view{display:none;padding:28px 0 60px}
+section.view.on{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.eyebrow{font-size:11.5px;letter-spacing:.18em;color:var(--gold);font-weight:600;text-transform:uppercase}
+h1,h2,h3{font-family:var(--serif);margin:0;letter-spacing:-.01em}
+h2{font-size:28px;line-height:1.3;margin:6px 0 6px}
+h3{font-size:18px}
+.lede{color:var(--ink2);max-width:720px;margin:0 0 22px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.split{display:grid;grid-template-columns:360px 1fr;gap:20px;align-items:start}
+@media (max-width:900px){.g2,.g3,.g4,.split{grid-template-columns:1fr}.g4.keep{grid-template-columns:1fr 1fr}}
+.note{font-size:12px;color:var(--mute);line-height:1.5}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;background:#efe8da;color:var(--ink2);margin-right:4px}
+.tag.est{background:#e3eff0;color:var(--river)}
+.tag.virt{background:#f6e3dc;color:var(--warn)}
+.tag.ok{background:#e1f0e7;color:var(--ok)}
+.btn{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:10px;padding:11px 18px;font-weight:600;cursor:pointer;background:var(--ink);color:#fff;transition:transform .1s,background .2s}
+.btn:hover{background:#22374a}.btn:active{transform:scale(.98)}
+.btn.gold{background:var(--gold);color:#fff}.btn.gold:hover{background:#a37e3c}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.ghost:hover{background:#efe8da}
+.btn.sm{padding:7px 12px;font-size:13px;border-radius:8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:22px;padding:8px 14px;font-size:13.5px;cursor:pointer;transition:.15s}
+.chip:hover{border-color:var(--gold)}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+label.f{display:block;font-size:12.5px;color:var(--mute);margin:14px 0 6px;font-weight:500}
+select,input[type=number],input[type=text]{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff}
+input[type=range]{width:100%;accent-color:var(--river)}
+.disc{margin-top:18px;padding:12px 14px;border-left:3px solid var(--gold);background:#fbf6ea;font-size:12.5px;color:var(--ink2);border-radius:0 8px 8px 0}
+
+/* home */
+.hero{position:relative;border-radius:20px;overflow:hidden;aspect-ratio:1100/432;min-height:420px;color:#fff;display:flex;align-items:flex-end}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,18,26,.72) 0%,rgba(10,18,26,.35) 38%,rgba(10,18,26,0) 62%),linear-gradient(180deg,rgba(10,18,26,0) 45%,rgba(10,18,26,.6))}
+.hero .in{position:relative;z-index:2;padding:34px}
+.hero h1{font-size:46px;line-height:1.15;font-weight:900}
+.hero p{max-width:560px;color:#e9e3d6;margin:12px 0 20px}
+.hero .cap{position:absolute;right:14px;top:12px;z-index:2;font-size:11px;color:#e9e3d6;background:rgba(0,0,0,.35);padding:3px 8px;border-radius:6px}
+.facts{display:grid;grid-template-columns:repeat(6,1fr);gap:0;margin:18px 0 26px;background:var(--card);border:1px solid var(--line);border-radius:var(--r)}
+.facts div{padding:16px;border-right:1px solid var(--line)}
+.facts div:last-child{border-right:0}
+.facts b{display:block;font-family:var(--serif);font-size:24px;color:var(--river)}
+.facts span{font-size:12px;color:var(--mute)}
+@media (max-width:900px){.facts{grid-template-columns:repeat(3,1fr)}.facts div:nth-child(3){border-right:0}.hero h1{font-size:34px}}
+.q{cursor:pointer;transition:.2s;position:relative}
+.q:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(19,32,43,.08)}
+.q .qk{font-size:12px;color:var(--gold);font-weight:700;letter-spacing:.1em}
+.q .qq{font-family:var(--serif);font-size:19px;margin:8px 0 10px;line-height:1.4}
+.q .go{font-size:13px;color:var(--river);font-weight:600}
+
+/* stepper */
+.steps{display:flex;gap:8px;margin-bottom:18px}
+.steps div{flex:1;padding:10px 12px;border-radius:10px;background:#ece6da;color:var(--mute);font-size:12.5px}
+.steps div b{display:block;font-size:11px;letter-spacing:.12em}
+.steps div.on{background:var(--ink);color:#fff}
+.steps div.done{background:#dfe9e9;color:var(--river)}
+.rec{position:relative;overflow:hidden}
+.rec .rank{position:absolute;right:16px;top:12px;font-family:var(--serif);font-size:44px;color:#eee6d6;font-weight:900}
+.rec h3{font-size:21px}
+.kv{display:grid;grid-template-columns:88px 1fr;gap:6px 10px;font-size:13.5px;margin:12px 0}
+.kv dt{color:var(--mute)}.kv dd{margin:0}
+.meter{height:8px;border-radius:5px;background:#ece6da;overflow:hidden}
+.meter i{display:block;height:100%;background:linear-gradient(90deg,var(--river),var(--river2))}
+
+/* site mini plan */
+.plan svg{width:100%;height:auto;display:block}
+.wing{cursor:pointer;transition:.15s}
+.wing:hover{opacity:.8}
+.pano{position:relative;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:#cfd9de}
+.pano svg{display:block;width:100%;height:auto}
+.pano .wm{position:absolute;left:12px;top:10px;font-size:11px;background:rgba(19,32,43,.72);color:#fff;padding:4px 9px;border-radius:6px}
+.pano .wm2{position:absolute;right:12px;bottom:10px;font-size:11px;background:rgba(255,255,255,.85);color:var(--ink);padding:4px 9px;border-radius:6px}
+.legend3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.legend3 div{border:1px solid var(--line);border-radius:10px;padding:10px;font-size:12px;background:#fff}
+.legend3 div.on{border-color:var(--river);box-shadow:inset 0 0 0 1px var(--river)}
+.legend3 b{display:block;font-size:13px}
+
+/* planner */
+.money{font-family:var(--serif);font-size:30px;color:var(--ink)}
+.money small{font-size:14px;color:var(--mute);font-family:var(--sans)}
+table.t{width:100%;border-collapse:collapse;font-size:13.5px}
+table.t th,table.t td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:right}
+table.t th:first-child,table.t td:first-child{text-align:left}
+table.t th{font-size:12px;color:var(--mute);font-weight:500}
+table.t tr.sum td{font-weight:700;border-top:2px solid var(--ink)}
+
+/* map */
+.mapbox svg{width:100%;height:auto;display:block;border-radius:var(--r);background:#eef0ea;border:1px solid var(--line)}
+.place-row{display:grid;grid-template-columns:1fr 70px 70px 60px;gap:6px;font-size:13px;padding:8px 0;border-bottom:1px solid var(--line);align-items:center}
+.place-row.h{font-size:11.5px;color:var(--mute)}
+.place-row span:not(:first-child){text-align:right}
+.up{color:var(--ok)}.dn{color:var(--warn)}
+
+/* chat */
+.chat{display:flex;flex-direction:column;height:580px;background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.chat .hd{padding:12px 16px;background:var(--ink);color:#fff;display:flex;align-items:center;gap:10px}
+.chat .hd .dot{width:9px;height:9px;border-radius:50%;background:#5fd38d}
+.chat .body{flex:1;overflow-y:auto;padding:16px;background:#f4f1ea}
+.msg{max-width:82%;margin:8px 0;padding:10px 13px;border-radius:14px;font-size:14px;white-space:pre-line}
+.msg.bot{background:#fff;border:1px solid var(--line);border-top-left-radius:4px}
+.msg.me{background:var(--river);color:#fff;margin-left:auto;border-top-right-radius:4px}
+.msg .src{display:block;margin-top:6px;font-size:11px;color:var(--mute)}
+.msg.route{background:#fbf3e3;border:1px solid var(--gold2)}
+.chat .qr{display:flex;gap:6px;flex-wrap:wrap;padding:10px 12px;border-top:1px solid var(--line);background:#fff}
+.chat .qr button{border:1px solid var(--line);background:#fff;border-radius:16px;padding:5px 11px;font-size:12.5px;cursor:pointer}
+.chat .qr button:hover{border-color:var(--river);color:var(--river)}
+.chat form{display:flex;gap:8px;padding:10px;border-top:1px solid var(--line)}
+.chat form input{flex:1}
+.flow{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+.flow span{font-size:12px;padding:6px 10px;border-radius:8px;background:#ece6da;color:var(--mute)}
+.flow span.on{background:var(--river);color:#fff}
+.log{font-size:12.5px;max-height:190px;overflow-y:auto}
+.log div{padding:5px 0;border-bottom:1px dashed var(--line);display:flex;justify-content:space-between;gap:8px}
+
+/* home card */
+.hcard{background:linear-gradient(160deg,#13202b,#1f3a46);color:#f3ede2;border-radius:18px;padding:26px;position:relative;overflow:hidden}
+.hcard:before{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(184,145,74,.35),transparent 70%)}
+.hcard h3{font-size:24px;color:#fff}
+.hcard .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+.hcard .cell{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px}
+.hcard .cell small{display:block;font-size:11px;color:#b9b2a3;letter-spacing:.06em}
+.hcard .cell b{font-size:15px}
+.slots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.slot{border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center;font-size:13px;cursor:pointer;background:#fff}
+.slot.on{background:var(--river);color:#fff;border-color:var(--river)}
+.slot.full{opacity:.4;cursor:not-allowed;text-decoration:line-through}
+
+/* ops */
+.funnel .st{display:grid;grid-template-columns:110px 1fr 70px;gap:10px;align-items:center;margin:8px 0;font-size:13px}
+.funnel .st .b{height:26px;border-radius:6px;background:var(--river);color:#fff;font-size:12px;display:flex;align-items:center;padding:0 10px;min-width:36px}
+.matrix{display:grid;grid-template-columns:110px repeat(4,1fr);gap:4px;font-size:12px}
+.matrix div{padding:7px 6px;border-radius:6px;text-align:center}
+.matrix .h{color:var(--mute);background:transparent;font-size:11.5px}
+.matrix .c{background:#ece6da;cursor:default}
+.matrix .c.test{background:#cfe3e4;color:var(--river);font-weight:600}
+.matrix .c.win{background:var(--river);color:#fff;font-weight:600}
+.matrix .c.off{background:#f3e2dc;color:var(--warn)}
+
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;font-size:13.5px;opacity:0;transition:.3s;z-index:99;max-width:90vw;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+footer{border-top:1px solid var(--line);padding:22px 0 40px;font-size:12px;color:var(--mute)}
+.hide{display:none!important}
+.hero .tog{position:absolute;right:14px;bottom:14px;z-index:3;display:flex;gap:4px;background:rgba(0,0,0,.4);padding:4px;border-radius:10px}
+.hero .tog button{border:0;background:transparent;color:#ddd;padding:6px 12px;border-radius:7px;cursor:pointer;font-size:12.5px}
+.hero .tog button.on{background:#fff;color:var(--ink)}
+.hero img{transition:opacity .6s}
+.fig{margin:0;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:#fff}
+.fig img{display:block;width:100%;height:auto}
+.fig figcaption{font-size:11.5px;color:var(--mute);padding:8px 12px;border-top:1px solid var(--line)}
+.photo3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width:900px){.photo3{grid-template-columns:1fr}}
+.photo3 .fig{cursor:zoom-in}
+.photo3 .fig b{display:block;color:var(--ink);font-size:13px;margin-bottom:2px}
+.sec{margin-top:44px}
+.spec{width:100%;border-collapse:collapse;font-size:13.5px}
+.spec th,.spec td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.spec th{width:130px;color:var(--mute);font-weight:500;background:#f3eee4}
+.spec td.n,.spec th.n{text-align:right}
+.ttabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.ttabs button{border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px 16px;cursor:pointer;text-align:left;line-height:1.25}
+.ttabs button b{display:block;font-family:var(--serif);font-size:18px}
+.ttabs button small{color:var(--mute);font-size:11.5px}
+.ttabs button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.ttabs button.on small{color:#cfc7b8}
+.bigstat{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0}
+.bigstat div{background:#f3eee4;border-radius:10px;padding:10px 12px}
+.bigstat b{display:block;font-family:var(--serif);font-size:20px;color:var(--river)}
+.bigstat span{font-size:11.5px;color:var(--mute)}
+@media (max-width:900px){.bigstat{grid-template-columns:1fr 1fr}}
+.feat{list-style:none;padding:0;margin:10px 0;font-size:13.5px}
+.feat li{padding:6px 0 6px 22px;position:relative;border-bottom:1px dashed var(--line)}
+.feat li:before{content:"";position:absolute;left:4px;top:13px;width:8px;height:8px;border-radius:50%;background:var(--gold)}
+.fac{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.fac div{border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px 12px;font-size:13px}
+.fac div b{display:block;font-size:14px}
+.fac div span{color:var(--mute);font-size:12px}
+@media (max-width:900px){.fac{grid-template-columns:1fr 1fr}}
+.lb{position:fixed;inset:0;background:rgba(10,16,22,.88);z-index:100;display:none;align-items:center;justify-content:center;padding:20px;cursor:zoom-out}
+.lb.on{display:flex}
+.lb img{max-width:96vw;max-height:84vh;border-radius:8px}
+.lb p{position:absolute;bottom:16px;left:0;right:0;text-align:center;color:#e9e3d6;font-size:13px}
+.zoom{cursor:zoom-in}
+.pinmap{position:relative;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:#fff}
+.pinmap img{display:block;width:100%;height:auto}
+.pin{position:absolute;transform:translate(-50%,-50%);background:rgba(19,32,43,.82);color:#e9d6ad;font-size:12px;font-weight:700;padding:4px 9px;border-radius:20px;border:2px solid #fff;white-space:nowrap;transition:.25s;cursor:pointer}
+.pin.rec{background:var(--gold);color:#fff;font-size:14px;padding:6px 12px;box-shadow:0 0 0 6px rgba(184,145,74,.3)}
+.pin.dim{opacity:.45}
+.gml{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+.srcline{font-size:11.5px;color:var(--mute);margin-top:8px}
+@media (max-width:600px){.brand small,.mock{display:none}.lead .bar{width:60px}.top .row{height:50px}h2{font-size:23px}.chat{height:520px}#talkGrid{grid-template-columns:1fr!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap row">
+    <div class="brand" onclick="go('home')"><b>MY PANORAMA</b><small>공주신관 경남아너스빌(가칭) · 565개의 창, 565개의 공주</small></div>
+    <span class="mock">PT 시연용 목업</span>
+    <div class="spacer"></div>
+    <div class="lead" title="상담 우선순위 산정용 리드 점수(시연)">리드 점수 <span class="bar"><i id="leadBar"></i></span><b id="leadNum">0</b></div>
+  </div>
+  <div class="wrap"><nav class="tabs" id="tabs">
+    <a href="#home" data-v="home"><span class="k">HOME</span>홈</a>
+    <a href="#about" data-v="about"><span class="k">ABOUT</span>단지 정보</a>
+    <a href="#units" data-v="units"><span class="k">UNITS</span>평면·커뮤니티</a>
+    <a href="#find" data-v="find"><span class="k">LIVE</span>3분 내 집 찾기</a>
+    <a href="#see" data-v="see"><span class="k">SEE</span>조망 시뮬레이터</a>
+    <a href="#map" data-v="map"><span class="k">LIVE</span>생활권 지도</a>
+    <a href="#plan" data-v="plan"><span class="k">PLAN</span>갈아타기 플래너</a>
+    <a href="#talk" data-v="talk"><span class="k">TALK</span>분양 컨시어지</a>
+    <a href="#card" data-v="card"><span class="k">CARD</span>내 집 카드·예약</a>
+    <a href="#ops" data-v="ops"><span class="k">OPS</span>운영 대시보드</a>
+  </nav></div>
+</header>
+
+<main class="wrap">
+
+<!-- HOME -->
+<section class="view" id="v-home">
+  <div class="hero">
+    <img class="himg" src="img/hero_main.jpg" alt="공산성 야경과 금강을 배경으로 한 단지 메인 이미지" style="object-position:center 45%">
+    <img class="himg" src="img/aerial_day.jpg" alt="공주 신관동 주상복합 주간 조감도(변경후)" style="opacity:0">
+    <img class="himg" src="img/aerial_night.jpg" alt="공주 신관동 주상복합 야간 조감도" style="opacity:0">
+    <span class="cap" id="heroCap">분양 홈페이지 메인 이미지 · CG 연출로 실제 조망과 다를 수 있음</span>
+    <div class="tog"><button class="on" onclick="heroMode(0,this)">메인</button><button onclick="heroMode(1,this)">주간 조감도</button><button onclick="heroMode(2,this)">야간 조감도</button></div>
+    <div class="in">
+      <div class="eyebrow" style="color:var(--gold2)">MY PANORAMA LIVE</div>
+      <h1>565개의 창,<br>565개의 공주</h1>
+      <p>같은 단지, 같은 84형이라도 창마다 보이는 공주는 다릅니다. 조망·생활·자금 세 가지 질문에 고객 한 사람 기준으로 답하는 AI 분양 웹 샘플입니다.</p>
+      <button class="btn gold" onclick="go('find')">3분 안에 내 집 찾기 →</button>
+      <button class="btn ghost" style="color:#fff;border-color:rgba(255,255,255,.4);margin-left:6px" onclick="go('talk')">24시간 상담 열기</button>
+    </div>
+  </div>
+
+  <div class="facts">
+    <div><b>598</b><span>공동주택 565세대 + 오피스텔 33실</span></div>
+    <div><b>26층 · 6개동</b><span>지하3층~지상 최고 26층, X자형 4방향 타워</span></div>
+    <div><b>91%</b><span>84형 비중 (84A 414 · 84B 101)</span></div>
+    <div><b>1.47대</b><span>세대당 주차 (공동주택 830대)</span></div>
+    <div><b>26.4%</b><span>조경 면적 비율 · Forest Town</span></div>
+    <div><b>24층</b><span>102동 전망대·전시실(계획)</span></div>
+  </div>
+
+  <div class="grid" style="grid-template-columns:1.5fr 1fr;gap:18px;align-items:stretch" id="locGrid">
+    <figure class="fig zoom" onclick="lbOpen('img/site_aerial.jpg','항공 분석 — 금강 북측 신관동, 대상지(적색) · 건축계획서 p.17')"><img src="img/site_aerial.jpg" alt="신관동 일대 항공사진과 대상지 위치"><figcaption>항공 분석 · 대상지(적색)와 금강, 금강신관공원 · 건축계획서(2026.07) p.17</figcaption></figure>
+    <div class="card">
+      <div class="eyebrow">LOCATION</div>
+      <h2 style="font-size:24px">금강을 품은 신관동,<br>직주근접 생활 중심</h2>
+      <p class="note" style="font-size:13.5px;color:var(--ink2)">충청남도 공주시 신관동 608번지. 신관동 남측으로 금강신관공원과 금강 수변이 펼쳐지고, 북측은 공주종합버스터미널과 맞닿아 있습니다.</p>
+      <ul class="feat">
+        <li><b>금강 수경관</b> — 남측 금강·금강신관공원, 강 건너 공산성</li>
+        <li><b>광역 교통</b> — 북측 공주종합버스터미널 인접, 공주~세종 BRT 추진 중</li>
+        <li><b>3면 도로</b> — 동측 24m · 서측 15m · 남측 6m 도로 인접</li>
+        <li><b>생활권</b> — 신관·월송 생활권(공주 인구 36.2%) 중심</li>
+      </ul>
+      <button class="btn sm ghost" onclick="go('map')">생활권 지도로 보기 →</button>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="eyebrow">공주의 풍경 속에서</div>
+    <h2>강 건너 공산성에서도 보이는 단지</h2>
+    <p class="lede">건축계획서 경관 시뮬레이션은 금강신관공원·금강교·공산성 만하루에서 최고 26층 단지가 어떻게 보이는지 검토했습니다. 바깥에서 단지가 보인다는 건, 거꾸로 단지 고층부에서 그쪽 풍경이 열릴 수 있다는 뜻입니다.</p>
+    <div class="photo3" id="homeViews"></div>
+  </div>
+
+  <div class="sec"></div>
+  <div class="eyebrow">고객이 계약 전에 묻는 세 가지</div>
+  <h2 style="margin-bottom:16px">모두에게 같은 답은 없습니다</h2>
+  <div class="grid g3">
+    <div class="card q" onclick="go('see')"><div class="qk">Q1 · 조망 · SEE</div><div class="qq">“우리 집 창에서<br>정말 공산성이 보여요?”</div><p class="note">동·층·향별 예상 시야를 검증 등급과 함께 보여줍니다.</p><div class="go">AI 조망 시뮬레이터 →</div></div>
+    <div class="card q" onclick="go('map')"><div class="qk">Q2 · 생활 · LIVE</div><div class="qq">“다니던 병원·학교·시장,<br>그대로 다닐 수 있나요?”</div><p class="note">내 생활 동선을 새집 기준으로 다시 그립니다.</p><div class="go">AI 생활권 지도 →</div></div>
+    <div class="card q" onclick="go('plan')"><div class="qk">Q3 · 자금 · PLAN</div><div class="qq">“지금 집을 팔면<br>얼마를 더 보태야 하나요?”</div><p class="note">기존 집 매각 범위와 분양 총액을 한 화면에서 비교합니다.</p><div class="go">AI 갈아타기 플래너 →</div></div>
+  </div>
+  <div class="disc">이 페이지는 광고대행 경쟁 PT 시연용 웹 목업입니다. 단지 개요는 건축계획서(2026.07.22, 변경후) 계획 수치이며, 화면 속 추천 세대·조망·가격·이동시간은 <b>가상 예시</b>입니다. 본 사업지 분양가는 미정이며, 입력값은 저장·전송되지 않습니다.</div>
+</section>
+
+<!-- ABOUT -->
+<section class="view" id="v-about">
+  <div class="eyebrow">ABOUT · 사업개요</div>
+  <h2>공주시 신관동 주상복합</h2>
+  <p class="lede">지하 3층~지상 26층, 6개동 공동주택 565세대와 오피스텔 33실, 근린생활시설로 이루어진 주상복합 단지입니다. 아래 수치는 모두 2026.07.22 건축계획서(변경후)의 계획 수치입니다.</p>
+  <div class="grid g2">
+    <div class="card">
+      <h3 style="margin-bottom:10px">사업 개요</h3>
+      <table class="spec">
+        <tr><th>대지 위치</th><td>충청남도 공주시 신관동 608번지</td></tr>
+        <tr><th>지역·지구</th><td>도시지역, 일반상업지역, 중점경관관리구역</td></tr>
+        <tr><th>도로 현황</th><td>동측 24m · 서측 15m · 남측 6m 도로 인접</td></tr>
+        <tr><th>대지 면적</th><td>17,000.20㎡ (5,142.56평)</td></tr>
+        <tr><th>건축 면적</th><td>5,654.20㎡ · 건폐율 34.63%</td></tr>
+        <tr><th>연면적</th><td>112,271.64㎡ · 용적률 431.96%</td></tr>
+        <tr><th>규모</th><td>지하 3층 / 지상 최고 26층, 6개동</td></tr>
+        <tr><th>세대·호실</th><td>공동주택 565세대 (85㎡ 미만 515 · 초과 50) + 오피스텔 33실</td></tr>
+        <tr><th>용도</th><td>공동주택 및 부대복리시설, 업무시설(오피스텔), 근린생활시설</td></tr>
+        <tr><th>조경·공개공지</th><td>조경 4,310.74㎡ (26.40%) · 공개공지 854.31㎡ (5.23%)</td></tr>
+        <tr><th>주차</th><td>총 925대 — 공동주택 830대(세대당 1.47대), 오피스텔 80대(호당 2.42대), 근생 15대</td></tr>
+      </table>
+      <p class="srcline">출처: 건축계획서(2026.07.22) p.8 사업개요 · 계획 수치로 인허가·분양 단계에서 변경 가능</p>
+    </div>
+    <figure class="fig zoom" onclick="lbOpen('img/siteplan.jpg','배치도(변경후) · 건축계획서 p.7')"><img src="img/siteplan.jpg" alt="배치도(변경후)"><figcaption>배치도(변경후) · 동·타입·층 구성 표기 · 클릭하면 크게 보기</figcaption></figure>
+  </div>
+
+  <div class="sec">
+    <div class="eyebrow">동별 구성</div>
+    <h2>6개동, 598호실의 배치</h2>
+    <div class="card" style="overflow-x:auto">
+      <table class="t" id="dongTable"></table>
+      <p class="srcline">배치도(변경후) 표기 기준. 105동 북측 두 날개는 1~17층 오피스텔, 18~26층 84A. 102동 24층은 게스트하우스·전망대&전시실(계획).</p>
+    </div>
+  </div>
+
+  <div class="sec grid" style="grid-template-columns:1fr 1.3fr;gap:18px;align-items:start">
+    <figure class="fig zoom" onclick="lbOpen('img/landscape.jpg','조경계획도 · Forest Town · 건축계획서 p.67')"><img src="img/landscape.jpg" alt="조경계획도"><figcaption>조경계획도 · 건축계획서 p.67</figcaption></figure>
+    <div class="card">
+      <div class="eyebrow">LANDSCAPE</div>
+      <h2 style="font-size:24px">Forest Town<br><span style="font-size:17px;color:var(--mute)">지속가능한 자연 속 휴식공간</span></h2>
+      <div class="bigstat">
+        <div><b>26.4%</b><span>조경 면적 비율 (법정 10%)</span></div>
+        <div><b>4,311㎡</b><span>조경 면적</span></div>
+        <div><b>808㎡</b><span>어린이놀이터 4개소</span></div>
+        <div><b>854㎡</b><span>공개공지 2개소</span></div>
+      </div>
+      <ul class="feat">
+        <li>단지 중앙 남북축 <b>커뮤니티광장</b> — 수경시설과 산책 동선</li>
+        <li>동마다 접한 <b>어린이놀이터 1~4</b>, 동측 대로변 녹지 완충</li>
+        <li>남측 <b>공개공지-1</b>과 선큰(SUNKEN)으로 지하 커뮤니티에 빛과 바람</li>
+        <li>지상은 보행 중심 — 차량은 지하주차장 출입구(동측)로 분리</li>
+      </ul>
+      <p class="srcline">출처: 건축계획서 p.8·67·72~75</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="eyebrow">부대복리시설</div>
+    <h2>단지 안에서 해결되는 일상</h2>
+    <div class="fac" id="facList"></div>
+    <p class="srcline">출처: 건축계획서 p.8 부대복리시설 계획 면적. 세부 구성은 특화계획에 따라 변경될 수 있음.</p>
+  </div>
+</section>
+
+<!-- UNITS -->
+<section class="view" id="v-units">
+  <div class="eyebrow">UNITS · 단위세대</div>
+  <h2>같은 84형, 다른 생활 — 타입별 평면</h2>
+  <p class="lede">타입을 고르면 평면, 면적, 공간 구성, 배치된 동·층을 한 번에 볼 수 있습니다. 평면 이미지는 클릭하면 크게 볼 수 있습니다.</p>
+  <div class="ttabs" id="ttabs"></div>
+  <div class="grid" style="grid-template-columns:1.45fr 1fr;gap:18px;align-items:start" id="unitGrid">
+    <div>
+      <figure class="fig zoom" id="unitFig"><img id="unitImg" alt="단위세대 평면도"><figcaption id="unitCap"></figcaption></figure>
+      <div class="grid g2" style="margin-top:12px">
+        <figure class="fig"><img id="unitInt" alt="공간 이미지"><figcaption>공간 이미지 · 특화계획에 따라 변경될 수 있음</figcaption></figure>
+        <div class="card"><h3>배치 동·층</h3><div id="unitWhere" style="font-size:13.5px;margin-top:8px"></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="eyebrow" id="unitEyebrow"></div>
+      <h2 id="unitTitle" style="font-size:26px"></h2>
+      <p class="note" id="unitDesc" style="font-size:13.5px"></p>
+      <table class="spec" id="unitSpec" style="margin-top:10px"></table>
+      <h3 style="margin-top:18px">공간 구성</h3>
+      <ul class="feat" id="unitFeat"></ul>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px" id="unitBtns"></div>
+      <p class="srcline">출처: 건축계획서 p.8 분양면적표 · p.41~44 단위세대 평면도. 평은 3.3058㎡ 환산.</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="eyebrow">COMMUNITY</div>
+    <h2>지하 1층 주민공동시설 2,497㎡</h2>
+    <div class="grid" style="grid-template-columns:1.45fr 1fr;gap:18px;align-items:start">
+      <figure class="fig zoom" onclick="lbOpen('img/comm_plan.jpg','부대시설 평면도 — 주민공동시설 · 건축계획서 p.65')"><img src="img/comm_plan.jpg" alt="주민공동시설 평면도"><figcaption>부대시설 평면도(주민공동시설) · 건축계획서 p.65 · 클릭하면 크게 보기</figcaption></figure>
+      <div>
+        <figure class="fig"><img src="img/comm_golf.jpg" alt="스크린골프장 공간 이미지"><figcaption>스크린골프장 · 공간 이미지</figcaption></figure>
+        <figure class="fig" style="margin-top:12px"><img src="img/comm_sauna.jpg" alt="사우나 공간 이미지"><figcaption>사우나 · 공간 이미지</figcaption></figure>
+      </div>
+    </div>
+    <div class="card" style="margin-top:14px">
+      <table class="t">
+        <tr><th>시설</th><th>계획 면적</th><th>구성</th></tr>
+        <tr><td>골프연습장</td><td>521.54㎡</td><td>골프연습장 · 스크린골프장 · 퍼팅존</td></tr>
+        <tr><td>사우나</td><td>575.65㎡</td><td>사우나(남·여) · 탈의실&락커룸</td></tr>
+        <tr><td>피트니스</td><td>359.04㎡</td><td>휘트니스 · G.X ROOM</td></tr>
+        <tr><td>키즈·북·맘카페</td><td>385.70㎡</td><td>키즈룸&맘카페 · 북카페</td></tr>
+        <tr><td>다목적실 1·2</td><td>443.70㎡</td><td>다목적실 · 독서실(남·여)</td></tr>
+        <tr><td>입주민회의실</td><td>126.72㎡</td><td>입주민회의실</td></tr>
+        <tr><td>전시실·전망대</td><td>84.48㎡</td><td>102동 24층 (계획)</td></tr>
+        <tr class="sum"><td>합계</td><td>2,496.82㎡</td><td></td></tr>
+      </table>
+      <p class="srcline">출처: 건축계획서 p.8 · p.65. 시설 배치와 명칭은 특화계획에 따라 변경될 수 있음.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FIND -->
+<section class="view" id="v-find">
+  <div class="eyebrow">MY PANORAMA LIVE · 체험 시연</div>
+  <h2>고객이 3분 안에 ‘내 집’을 고른다</h2>
+  <p class="lede">가족 구성·현재 집·예산·중요 조건을 고르면, 6개동·4개 날개·층 구간 조합 중 조건에 맞는 세대 3개로 압축합니다.</p>
+  <div class="steps" id="steps">
+    <div class="on"><b>STEP 1</b>조건 입력</div><div><b>STEP 2</b>추천 세대 3</div><div><b>STEP 3</b>선택 근거</div><div><b>STEP 4</b>방문 예약</div>
+  </div>
+  <div class="split">
+    <div class="card">
+      <h3>나의 조건</h3>
+      <label class="f">가족 구성</label>
+      <div class="chips" data-k="family">
+        <span class="chip" data-v="2">1~2인</span><span class="chip" data-v="3">3인</span><span class="chip on" data-v="4">4인 · 초등 자녀</span><span class="chip" data-v="5">5인 이상 · 다자녀</span>
+      </div>
+      <label class="f">현재 거주</label>
+      <div class="chips" data-k="home">
+        <span class="chip on" data-v="sg">신관동 84㎡</span><span class="chip" data-v="ws">월송동</span><span class="chip" data-v="old">원도심(옥룡·중학동)</span><span class="chip" data-v="sj">세종·외부</span>
+      </div>
+      <label class="f">예산 (분양 총액 기준)</label>
+      <div class="chips" data-k="budget">
+        <span class="chip" data-v="3.9">3.9억 이하</span><span class="chip on" data-v="4.3">4억 내외</span><span class="chip" data-v="5.5">4.5억 이상</span>
+      </div>
+      <label class="f">가장 중요한 조건</label>
+      <div class="chips" data-k="pri">
+        <span class="chip on" data-v="view">조망</span><span class="chip" data-v="move">생활 동선</span><span class="chip" data-v="size">넓은 면적</span><span class="chip" data-v="price">가격</span>
+      </div>
+      <label class="f">두 번째 조건</label>
+      <div class="chips" data-k="pri2">
+        <span class="chip" data-v="view">조망</span><span class="chip on" data-v="move">생활 동선</span><span class="chip" data-v="size">넓은 면적</span><span class="chip" data-v="price">가격</span>
+      </div>
+      <div style="margin-top:20px"><button class="btn gold" style="width:100%;justify-content:center" onclick="recommend()">AI 추천 받기</button></div>
+      <p class="note" style="margin-top:10px">개인정보는 받지 않습니다. 실제 서비스는 동의 범위 안에서 최소 수집.</p>
+    </div>
+    <div>
+      <div class="card" style="padding:14px;margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><b>단지 지도 · 추천 동 표시</b><span class="note" id="pinNote">조건을 고르고 ‘AI 추천 받기’를 눌러 주세요</span></div>
+        <div class="grid" style="grid-template-columns:1fr 1fr;gap:12px" id="pinGrid">
+          <div class="pinmap" id="pinmap"><img src="img/siteplan.jpg" alt="배치도(변경후)"></div>
+          <div>
+            <figure class="fig zoom" onclick="lbOpen('img/site_aerial.jpg','대상지 항공 분석 · 건축계획서 p.17')"><img src="img/site_aerial.jpg" alt="대상지 항공사진"><figcaption>실제 항공사진 · 대상지(적색)</figcaption></figure>
+            <div class="gml">
+              <a class="btn sm" href="https://www.google.com/maps/search/?api=1&query=%EC%B6%A9%EC%B2%AD%EB%82%A8%EB%8F%84+%EA%B3%B5%EC%A3%BC%EC%8B%9C+%EC%8B%A0%EA%B4%80%EB%8F%99+608" target="_blank" rel="noopener" style="text-decoration:none">Google 지도에서 위치 보기 ↗</a>
+            </div>
+            <p class="note" style="margin-top:8px">실시간 구글 지도(위성·주변 학교·병원·마트 검색·시야 부채꼴)를 쓰는 버전은 별도 HTML로 제공합니다. 홈페이지·자체 서버에 올려 API 키로 작동합니다.</p>
+          </div>
+        </div>
+      </div>
+      <div id="recEmpty" class="hide"></div>
+      <div id="recList" class="grid hide"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SEE -->
+<section class="view" id="v-see">
+  <div class="eyebrow">AI SOLUTION 1 · SEE</div>
+  <h2>내 창의 파노라마 — AI 조망 시뮬레이터</h2>
+  <p class="lede">배치도에서 동과 날개(향)를 고르고 층·계절·시간대를 바꿔 보세요. X자형 4방향 타워라 같은 84A도 날개마다 보이는 공주가 다릅니다.</p>
+  <div class="split">
+    <div>
+      <div class="card plan" style="padding:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><b style="font-size:13px">배치도 (변경후) · 날개 선택</b><span class="note">↑ 북측 공주종합버스터미널</span></div>
+        <svg id="siteSvg" viewBox="0 0 300 330"></svg>
+        <div class="note" style="margin-top:6px">색: <span style="color:#e2a72e">■</span>84A <span style="color:#ef8a3c">■</span>84B <span style="color:#e9d76b">■</span>102A <span style="color:#7fb8de">■</span>오피스텔</div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <div id="seeUnit" style="font-family:var(--serif);font-size:20px">102동 · 84A · 18층</div>
+        <div class="note" id="seeUnitSub"></div>
+        <label class="f">층 <b id="floorLbl"></b></label>
+        <input type="range" id="floor" min="1" max="25" value="18">
+        <label class="f">계절</label>
+        <div class="chips" data-k="season"><span class="chip on" data-v="sp">봄</span><span class="chip" data-v="su">여름</span><span class="chip" data-v="au">가을</span><span class="chip" data-v="wi">겨울</span></div>
+        <label class="f">시간대</label>
+        <div class="chips" data-k="time"><span class="chip" data-v="am">아침</span><span class="chip on" data-v="pm">낮</span><span class="chip" data-v="ev">해질녘</span><span class="chip" data-v="nt">밤</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="pano"><svg id="pano" viewBox="0 0 1000 400"></svg>
+        <span class="wm">시뮬레이션 · 예상 시야</span><span class="wm2" id="panoDir"></span></div>
+      <div class="grid g2" style="margin-top:14px">
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><h3>조망 지수</h3><span class="tag virt">가상 산출</span></div>
+          <div class="money" id="viewScore">--<small> / 100</small></div>
+          <div class="meter" style="margin:8px 0 12px"><i id="viewMeter"></i></div>
+          <div class="note" id="viewWhy"></div>
+        </div>
+        <div class="card">
+          <h3>이 창에서 보이는 것</h3>
+          <div id="viewSee" style="margin-top:10px;font-size:13.5px"></div>
+          <div id="viewAlt" class="note" style="margin-top:10px"></div>
+        </div>
+      </div>
+      <div class="legend3" id="grades">
+        <div data-g="v"><b>검증 시야</b>드론 실촬영·측량 확인 · 광고·상담 사용</div>
+        <div data-g="e" class="on"><b>예상 시야</b>BIM·수치지형 시뮬레이션 · 상담·개인 리포트만</div>
+        <div data-g="u"><b>미확정 시야</b>주변 개발 예정·데이터 부족 · 조망 주장 금지</div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+        <button class="btn" onclick="pinUnit()">이 세대를 내 집 카드에 담기</button>
+        <button class="btn ghost" onclick="go('plan')">이 세대로 자금 진단 →</button>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center"><h3>역방향 근거 — 밖에서 본 단지</h3><span class="tag ok">실사 합성 · 건축계획서</span></div>
+        <p class="note">건축계획서 경관 시뮬레이션(최고 26층 반영). 이 지점들에서 단지 고층부가 보이므로, 해당 방향 세대는 시야가 열릴 가능성이 있습니다. 세대별 확정은 드론 실촬영 후 ‘검증 시야’로 올립니다.</p>
+        <div class="photo3" id="seeViews" style="margin-top:10px"></div>
+      </div>
+      <div class="disc">본 화면은 2026.07 건축계획 기준 시뮬레이션 <b>목업</b>으로, 방위별 경관 요소와 가림 정도는 시연용 가정입니다. 실제 서비스는 BIM·수치지형·주변 건물 3D와 층고별 드론 실촬영으로 보정한 뒤 등급을 부여하며, 실제 조망과 다를 수 있습니다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- MAP -->
+<section class="view" id="v-map">
+  <div class="eyebrow">AI SOLUTION 3 · LIVE</div>
+  <h2>신관 생활 지도 — 이사해도 생활은 그대로</h2>
+  <p class="lede">자주 가는 곳을 고르면 지금 집 기준과 새집 기준 이동을 나란히 비교합니다. 신관·월송 생활권에 공주 인구의 36.2%가 살고 있습니다.</p>
+  <div class="split">
+    <div class="card">
+      <h3>지금 사는 곳</h3>
+      <div class="chips" data-k="mhome" style="margin-top:10px">
+        <span class="chip on" data-v="sg">신관동 구축</span><span class="chip" data-v="ws">월송동</span><span class="chip" data-v="old">원도심</span>
+      </div>
+      <label class="f">자주 가는 곳 (복수 선택)</label>
+      <div class="chips" id="placeChips"></div>
+      <label class="f">이동 수단</label>
+      <div class="chips" data-k="mode"><span class="chip on" data-v="walk">도보</span><span class="chip" data-v="car">자가용</span></div>
+      <label style="display:flex;gap:8px;align-items:center;margin-top:16px;font-size:13.5px;cursor:pointer"><input type="checkbox" id="brt"> 공주~세종 BRT 시나리오 보기</label>
+      <p class="note">BRT는 공주 종합터미널~세종 18.5㎞ 추진 중이며 운행 시기는 공식 발표 후 반영합니다.</p>
+    </div>
+    <div>
+      <div class="mapbox"><svg id="mapSvg" viewBox="0 0 800 520"></svg></div>
+      <figure class="fig zoom" style="margin-top:14px" onclick="lbOpen('img/site_aerial.jpg','항공 분석 — 대상지(적색)와 금강 · 건축계획서 p.17')"><img src="img/site_aerial.jpg" alt="신관동 항공사진"><figcaption>실제 항공사진 · 대상지(적색) 남측으로 금강신관공원과 금강 · 건축계획서 p.17</figcaption></figure>
+      <div class="card" style="margin-top:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center"><h3>이동 비교</h3><span class="tag virt">가상 산출 · 실측 예정</span></div>
+        <div class="place-row h"><span>장소</span><span>지금 집</span><span>새집</span><span>차이</span></div>
+        <div id="mapRows"></div>
+        <div id="mapSum" style="margin-top:12px;font-size:14px"></div>
+        <div style="display:flex;gap:8px;margin-top:12px"><button class="btn sm" onclick="shortForm()">30초 숏폼으로 받기</button><button class="btn sm ghost" onclick="pinMap()">내 집 카드에 담기</button></div>
+      </div>
+      <div class="disc">지도는 위치 관계를 설명하기 위한 개략도(축척 아님)이며, 장소 위치와 이동 시간은 <b>가상 값</b>입니다. 실제 서비스는 단지 출입구 기준 실측 보행·대중교통 데이터로 산출합니다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PLAN -->
+<section class="view" id="v-plan">
+  <div class="eyebrow">AI SOLUTION 2 · PLAN</div>
+  <h2>다음 집 계산기 — AI 갈아타기 플래너</h2>
+  <p class="lede">‘비싸다’는 막연한 걱정을 ‘얼마가 필요한지’라는 구체적인 상담으로 바꿉니다.</p>
+  <div class="split">
+    <div class="card">
+      <h3>고객 입력</h3>
+      <label class="f">지금 사는 단지·평형</label>
+      <select id="pHome">
+        <option value="2.18">신관동 구축 84㎡ (거래 사례 2.18억 · 2026.10)</option>
+        <option value="2.6">월송동 준신축 84㎡ (가정 2.6억)</option>
+        <option value="1.7">원도심 구축 59㎡ (가정 1.7억)</option>
+        <option value="0">무주택 · 전세 거주</option>
+      </select>
+      <label class="f">예상 매도가 <b id="pSaleLbl"></b></label>
+      <input type="range" id="pSale" min="0" max="4" step="0.01" value="2.18">
+      <label class="f">기존 대출 잔액 <b id="pLoanLbl"></b></label>
+      <input type="range" id="pLoan" min="0" max="2" step="0.05" value="0.6">
+      <label class="f">관심 타입</label>
+      <div class="chips" data-k="ptype"><span class="chip on" data-v="84A">84A</span><span class="chip" data-v="84B">84B</span><span class="chip" data-v="102A">102A</span></div>
+      <label class="f">층 구간</label>
+      <div class="chips" data-k="pfl"><span class="chip" data-v="lo">저층</span><span class="chip" data-v="mid">중층</span><span class="chip on" data-v="hi">고층</span></div>
+      <label class="f">가정 분양가 (억원) <span class="tag virt">본 사업지 분양가 미정</span></label>
+      <input type="number" id="pPrice" step="0.01" value="4.33">
+      <label class="f">납부 방식</label>
+      <div class="chips" data-k="pay"><span class="chip on" data-v="loan">중도금 대출 60% (이자후불 가정)</span><span class="chip" data-v="cash">자납</span></div>
+      <label class="f">희망 입주 시점</label>
+      <select id="pWhen"><option>입주 시 (예정일 미정)</option><option>입주 후 6개월 이내</option><option>입주 후 1년 이내</option></select>
+    </div>
+    <div>
+      <div class="grid g2">
+        <div class="card"><div class="note">부족 자금 범위</div><div class="money" id="gapRange">-</div><div class="note" id="gapNote"></div></div>
+        <div class="card"><div class="note">기존 집 정리 후 순현금</div><div class="money" id="netCash">-</div><div class="note">예상 매도가 범위 − 대출 상환 − 매각 비용</div></div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h3>한 화면 비교</h3>
+        <svg id="planChart" viewBox="0 0 700 170" style="width:100%;height:auto;margin-top:8px"></svg>
+        <table class="t" style="margin-top:8px" id="planTable"></table>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center"><h3>납부 시나리오</h3><span class="tag virt">가정 비율</span></div>
+        <table class="t" style="margin-top:8px" id="payTable"></table>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+        <button class="btn gold" onclick="planDone()">진단 결과로 상담 예약</button>
+        <button class="btn ghost" onclick="pinPlan()">내 집 카드에 담기</button>
+      </div>
+      <div class="disc">플래너 결과는 참고용 시뮬레이션입니다. 분양가·계약금 비율·중도금 대출 조건은 모집공고 확정 후 실제 값으로 교체하며, 대출·세금(일시적 2주택 등) 판단은 상담사와 전문가 확인 후 안내합니다. 취득세는 1주택 기준 단순 가정(6억 이하 1% + 지방교육세, 85㎡ 초과 농특세 포함).</div>
+    </div>
+  </div>
+</section>
+
+<!-- TALK -->
+<section class="view" id="v-talk">
+  <div class="eyebrow">AI SOLUTION 4 · TALK</div>
+  <h2>24시간 분양 컨시어지 — 상담은 AI가 받고, 계약은 사람이 만든다</h2>
+  <div class="flow" id="flow"><span class="on">① 고객 질문</span><span>② 근거 있는 답변</span><span>③ 민감 질문 분기</span><span>④ 리드 점수</span><span>⑤ 사람이 연결</span></div>
+  <div class="grid" style="grid-template-columns:1.4fr 1fr;gap:18px" id="talkGrid">
+    <div class="chat">
+      <div class="hd"><span class="dot"></span><b>경남아너스빌(가칭) 분양 컨시어지</b><span class="spacer"></span><span style="font-size:11px;color:#b9b2a3">확정 자료 범위에서만 답변</span></div>
+      <div class="body" id="chatBody"></div>
+      <div class="qr" id="qr"></div>
+      <form id="chatForm"><input type="text" id="chatIn" placeholder="예) 주차는 몇 대예요? / 102A는 어느 동이에요?" autocomplete="off"><button class="btn sm">전송</button></form>
+    </div>
+    <div>
+      <div class="card">
+        <h3>상담사 화면 · 리드 현황</h3>
+        <div class="kv" style="grid-template-columns:100px 1fr">
+          <dt>리드 점수</dt><dd><b id="leadNum2">0</b> / 100 <span id="leadTier" class="tag">관심</span></dd>
+          <dt>관심 타입</dt><dd id="lType">-</dd>
+          <dt>방문 의향</dt><dd id="lVisit">-</dd>
+          <dt>자금 시나리오</dt><dd id="lFund">-</dd>
+          <dt>민감 질문</dt><dd id="lSens">0건</dd>
+        </div>
+        <div class="note" style="margin-bottom:6px">행동 기록</div>
+        <div class="log" id="leadLog"></div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h3>고객이 얻는 것 / 현장이 얻는 것</h3>
+        <p class="note" style="margin-top:8px">밤 11시에도 확인된 범위 안에서 답변 · 같은 질문을 반복하지 않는 상담<br>상담사는 계약 가능성이 높은 고객에 집중 · 자주 묻는 질문이 다음 주 광고 메시지로</p>
+      </div>
+    </div>
+  </div>
+  <div class="disc">시연용 규칙 기반 응답입니다. 실제 서비스는 모집공고·확정 자료만 학습한 생성형 AI가 사실 안내 범위에서 답하고, 분양가·대출·세금·계약 조건은 상담사가 확인 후 안내합니다. 대화 기록은 동의 범위 안에서만 활용합니다.</div>
+</section>
+
+<!-- CARD -->
+<section class="view" id="v-card">
+  <div class="eyebrow">결과물 = 상담의 출발점</div>
+  <h2>1페이지 내 집 카드 · 방문 예약</h2>
+  <p class="lede">조망·생활·자금 진단 결과가 한 장에 모입니다. 고객은 카카오로 받아 가족과 공유하고, 상담사는 같은 카드를 보고 상담을 시작합니다.</p>
+  <div class="grid g2">
+    <div>
+      <div class="hcard" id="hcard"></div>
+      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+        <button class="btn gold" onclick="sendKakao()">카카오로 받기</button>
+        <button class="btn ghost" onclick="copyCard()">카드 내용 복사</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>견본주택 방문 예약</h3>
+      <label class="f">날짜</label>
+      <div class="chips" data-k="day" id="dayChips"></div>
+      <label class="f">시간</label>
+      <div class="slots" id="slots"></div>
+      <label class="f">상담사 사전 배정</label>
+      <div id="agent" class="note" style="font-size:13.5px;color:var(--ink)">카드 내용을 기준으로 자동 배정됩니다.</div>
+      <button class="btn" style="width:100%;justify-content:center;margin-top:18px" onclick="book()">방문 예약하기</button>
+      <div id="booked" class="disc hide"></div>
+      <p class="note" style="margin-top:12px">목업: 실제 예약·전송은 이루어지지 않습니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- OPS -->
+<section class="view" id="v-ops">
+  <div class="eyebrow">운영 엔진 · 시행사/대행사 화면</div>
+  <h2>광고비가 계약으로 이어지는지, 매주 숫자로</h2>
+  <p class="lede">아래 수치는 대시보드 산식을 설명하기 위한 <b>가상 예시</b>이며 목표·전망치가 아닙니다. 단계별 목표치는 예산 확정 후 시행사와 합의합니다.</p>
+  <div class="grid g2">
+    <div class="card funnel">
+      <div style="display:flex;justify-content:space-between"><h3>계약 퍼널 (가상)</h3><span class="tag virt">샘플 데이터</span></div>
+      <div id="funnel" style="margin-top:12px"></div>
+      <table class="t" style="margin-top:12px">
+        <tr><th>KPI</th><th>산식 (분모 먼저 합의)</th><th>값</th></tr>
+        <tr><td>CPL</td><td>광고비 ÷ 유효리드</td><td id="kCpl"></td></tr>
+        <tr><td>예약률</td><td>방문 예약 ÷ 유효리드</td><td>30%</td></tr>
+        <tr><td>방문 이행률</td><td>실제 방문 ÷ 방문 예약</td><td>70%</td></tr>
+        <tr><td>청약 전환율</td><td>청약 ÷ 방문 상담</td><td>30%</td></tr>
+        <tr><td>계약 전환율</td><td>계약 ÷ 청약</td><td>39%</td></tr>
+        <tr><td>CAC</td><td>합의 비용 ÷ 광고 기여 계약</td><td id="kCac"></td></tr>
+      </table>
+      <label class="f">주간 광고비 가정 <b id="spendLbl"></b></label>
+      <input type="range" id="spend" min="1000" max="6000" step="100" value="2500">
+    </div>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between"><h3>크리에이티브 팩토리 · 36개 조합</h3><span class="tag virt">이번 주(가상)</span></div>
+      <p class="note">3 타깃 × 3 메시지 × 4 포맷. 주당 6~12개 집중 테스트 — 칸을 눌러 상태를 바꿔 보세요.</p>
+      <div style="display:flex;gap:6px;margin:8px 0" class="chips" data-k="msg">
+        <span class="chip on" data-v="0">풍경 — 나의 창</span><span class="chip" data-v="1">생활 — 그대로</span><span class="chip" data-v="2">자금 — 나의 숫자</span>
+      </div>
+      <div class="matrix" id="matrix"></div>
+      <div class="note" style="margin-top:8px"><span class="tag">대기</span><span class="tag est">테스트 중</span><span class="tag" style="background:var(--river);color:#fff">확대 집행</span><span class="tag virt">교체</span> · 집행 중 <b id="mCount"></b>개</div>
+      <h3 style="margin-top:18px">주간 AI 리포트 (예시)</h3>
+      <ul style="font-size:13.5px;padding-left:18px;margin:8px 0">
+        <li>이탈 구간: <b>방문 예약 → 실제 방문</b> 이행률 70% — 전날 리마인드·주차 안내 추가 제안</li>
+        <li>컨시어지 상위 질문: 주차 · 102A 위치 · 분양가 → 다음 주 ‘생활 — 그대로’ 소재에 주차 1.47대 반영</li>
+        <li>신관권 교체수요 × 자금 메시지 숏폼의 예약 기여 우세 → 예산 10%p 재배분안</li>
+      </ul>
+      <p class="note">AI는 변형·예측·리포트를, 사람은 콘셉트·사실 검증·최종 승인을 맡습니다.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer><div class="wrap">
+  COMMUNICATIONS OFCOURSE · 공주신관 경남아너스빌(가칭) 광고·마케팅 제안 · MY PANORAMA LIVE 웹 샘플 (PT 시연용 목업)<br>
+  이미지·자료 기준: 공주시 신관동 주상복합 건설공사 건축계획서 2026.07.22 (변경후, 계획 수치 · 조감도·평면·공간 이미지는 특화계획에 따라 변경 가능) · 경쟁 단지 2026.04.30 모집공고 · 실거래 단일 사례(2026.10.21). 화면 속 세대 추천·조망·이동시간·가격·퍼널 수치는 가상 예시이며, 툴 명칭은 작업용입니다.
+</div></footer>
+
+<div class="toast" id="toast"></div>
+<div class="lb" id="lb" onclick="this.classList.remove('on')"><img id="lbImg" alt=""><p id="lbCap"></p></div>
+
+<script>
+/* ================= DATA (건축계획서 배치도 변경후 기준) ================= */
+const DONGS = {
+  105:{x:0,y:0, note:'북서측 · 터미널 인접 · 오피스텔 1~17층', near:'공주종합버스터미널 인접, 서측 도로', wings:{
+    NW:{t:'84A',f:[18,26],alt:{t:'122OA',f:[1,17]}}, NE:{t:'84A',f:[18,26],alt:{t:'122OA',f:[2,17]}}, SW:{t:'84B',f:[1,26]}, SE:{t:'84A',f:[2,26]} }},
+  106:{x:1,y:0, note:'북동측 · 터미널 인접 · 동측 24m 대로', near:'공주종합버스터미널 바로 앞', wings:{
+    NW:{t:'84A',f:[2,26]}, NE:{t:'84A',f:[2,26]}, SW:{t:'84A',f:[2,26]}, SE:{t:'84B',f:[2,26]} }},
+  104:{x:0,y:1, note:'서측 · 커뮤니티광장 인접', near:'커뮤니티광장·어린이놀이터 인접', wings:{
+    NW:{t:'84A',f:[1,26]}, NE:{t:'84A',f:[1,26]}, SW:{t:'84B',f:[2,26]}, SE:{t:'84A',f:[2,26]} }},
+  103:{x:1,y:1, note:'동측 24m 대로 · 커뮤니티광장 인접', near:'동측 대로·커뮤니티광장 인접', wings:{
+    NW:{t:'84A',f:[2,26]}, NE:{t:'84A',f:[2,26]}, SW:{t:'84A',f:[2,26]}, SE:{t:'84B',f:[2,26]} }},
+  101:{x:0,y:2, note:'남측 전면 · 102A 25세대', near:'남측 전면·공개공지 인접', wings:{
+    NW:{t:'84A',f:[1,25]}, NE:{t:'84A',f:[2,25]}, SW:{t:'102A',f:[1,25]}, SE:{t:'84A',f:[1,25]} }},
+  102:{x:1,y:2, note:'남측 전면 · 102A 25세대 · 24층 전망대(계획)', near:'남측 전면·24층 전망대·게스트하우스(계획)', wings:{
+    NW:{t:'84A',f:[2,25]}, NE:{t:'84A',f:[1,23]}, SW:{t:'102A',f:[1,25]}, SE:{t:'84A',f:[1,23]} }},
+};
+// 방위별 가림 정도(0=트임, 1=막힘) — 시연용 가정
+const OBST = {
+  105:{N:.2,W:.15,S:.62,E:.35}, 106:{N:.2,E:.15,S:.62,W:.35},
+  104:{W:.15,S:.6,N:.55,E:.35}, 103:{E:.15,S:.58,N:.6,W:.35},
+  101:{S:.08,W:.2,N:.6,E:.5},  102:{S:.08,E:.2,N:.62,W:.5}
+};
+const DIRW = {S:1, W:.82, E:.7, N:.64};
+const DIRNAME = {N:'북',S:'남',E:'동',W:'서'};
+const SEEMAP = {
+  S:['금강 수변','공산성 능선(원경)','금강신관공원'],
+  W:['금강 상류 방면','신관동 저층 시가지','서측 산 능선'],
+  N:['공주종합버스터미널','월송 방면 시가지','북측 산 능선'],
+  E:['24m 대로 가로수','신관동 생활 상권','동측 산 능선']
+};
+const TYPE = {
+  '84A':{name:'84A',py:'공급 33.16평',price:4.20,area:84,desc:'단지의 중심 평면 (414세대)',
+    ex:'84.9819',exp:'25.71',sup:'109.6262',supp:'33.16',con:'175.3825',conp:'53.05',n:'414세대',ratio:'73.37%',img:'plan_84A',int:'int_bed',
+    lead:'단지의 중심 평면. 거실·주방을 한가운데 두고 침실을 양쪽으로 나눈 판상형 구성입니다.',
+    feat:['침실 3 · 욕실 2 (부부욕실·가족욕실)','부부 침실 드레스룸 + 부부욕실','주방 옆 펜트리, 현관창고','거실-주방 일체형 LDK, 아일랜드 식탁 배치','발코니 1·2, 실외기실, 하향식 피난구'],
+    where:'101동 74 · 102동 70 · 103동 75 · 104동 77 · 105동 43(18~26층) · 106동 75'},
+  '84B':{name:'84B',py:'공급 33.34평',price:4.15,area:84,desc:'같은 84형, 다른 생활 동선 (101세대)',
+    ex:'84.9771',exp:'25.71',sup:'110.2031',supp:'33.34',con:'175.9557',conp:'53.23',n:'101세대',ratio:'17.81%',img:'plan_84B',int:'int_living',
+    lead:'거실을 넓게 열고 침실 3개를 한쪽에 나란히 모은 구성. 알파룸을 더해 서재·놀이방으로 쓸 수 있습니다.',
+    feat:['침실 3 + 알파룸 · 욕실 2','거실 2면 창 — 코너형 개방감','침실 3실 일렬 배치, 부부욕실·드레스룸','현관창고, 실외기실, 발코니 1·2','주방-거실 일체형 동선'],
+    where:'103동 25 · 104동 25 · 105동 26 · 106동 25'},
+  '102A':{name:'102A',py:'공급 39.99평',price:5.10,area:102,desc:'넓게 사는 공주의 다음 기준 (50세대)',
+    ex:'102.9753',exp:'31.15',sup:'132.1863',supp:'39.99',con:'211.8651',conp:'66.09',n:'50세대',ratio:'8.82%',img:'plan_102A',int:'int_living',
+    lead:'남측 전면 101·102동에만 있는 대형 평면. 침실 4개와 넓은 LDK로 다자녀·3세대 가족에 맞습니다.',
+    feat:['침실 4 · 욕실 2','부부 침실 드레스룸 + 부부욕실','주방 펜트리, 현관창고','넓은 거실·주방 일체형 LDK','남측 전면 동(101·102동) 배치'],
+    where:'101동 25 · 102동 25 (남서측 날개, 1~25층)'},
+  '122OA':{name:'오피스텔 122OA',py:'오피스텔',price:null,area:122,desc:'주거와 분리된 독립 상품 (33실)',
+    ex:'122.8363',exp:'37.16',sup:'155.5123',supp:'47.04',con:'266.7165',conp:'80.68',n:'33실',ratio:'—',img:'plan_122OA',int:'int_bed',
+    lead:'105동 저층부(1~17층)의 주거형 오피스텔. 아파트와 같은 3룸 구성이지만 청약·세금·대출 조건이 다릅니다.',
+    feat:['침실 3 · 욕실 2, 드레스룸','펜트리, 현관창고','아파트형 LDK 구성','105동 북측 두 날개 1~17층','아파트 청약 대상 아님 — 조건별 상담'],
+    where:'105동 33실 (북측 두 날개, 1~17층)'}
+};
+const VIEWSHOT=[
+  {img:'view_park',t:'금강신관공원에서',d:'대상지 남서측 금강신관공원 진입부 — 공원 수목 너머로 단지 고층부'},
+  {img:'view_bridge',t:'금강 건너 다리 위에서',d:'대상지 남서측 금강 위 — 강 너머 신관동 스카이라인 속 단지'},
+  {img:'view_gongsan',t:'공산성 만하루·연지에서',d:'대상지 남서측 공산성 — 금강 너머 정면에 단지 최고 26층'}
+];
+const FLB = {lo:{n:'저층',f:5,adj:-.04}, mid:{n:'중층',f:13,adj:0}, hi:{n:'고층',f:21,adj:.03}};
+
+/* ================= STATE ================= */
+const S = {
+  sel:{dong:102,wing:'NE',floor:18,alt:false}, season:'sp', time:'pm',
+  pin:null, map:null, plan:null, lead:0, leadEv:{}, sens:0, visit:false, booking:null,
+  find:{family:'4',home:'sg',budget:'4.3',pri:'view',pri2:'move'},
+  mhome:'sg', mode:'walk', places:new Set(['school','hosp','mart','park']),
+  ptype:'84A', pfl:'hi', pay:'loan', msg:'0', day:null, slot:null
+};
+try{ const saved = localStorage.getItem('mp_tab'); }catch(e){}
+
+/* ================= UTIL ================= */
+const $ = s=>document.querySelector(s);
+const fmt = v=> (Math.round(v*100)/100).toFixed(2)+'억';
+const won = v=> { const man=Math.round(v*10000); return man>=10000? (Math.floor(man/10000)+'억 '+(man%10000? (man%10000).toLocaleString()+'만':'')).trim() : man.toLocaleString()+'만'; };
+function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('on');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('on'),2600);}
+function lead(key,pts,label){
+  if(S.leadEv[key]) return; S.leadEv[key]={pts,label,t:new Date()};
+  S.lead=Math.min(100,S.lead+pts); renderLead();
+}
+function renderLead(){
+  $('#leadBar').style.width=S.lead+'%'; $('#leadNum').textContent=S.lead; $('#leadNum2').textContent=S.lead;
+  const tier=$('#leadTier');
+  if(S.lead>=60){tier.textContent='즉시 콜백';tier.className='tag ok';}
+  else if(S.lead>=30){tier.textContent='관심 높음';tier.className='tag est';}
+  else {tier.textContent='관심';tier.className='tag';}
+  $('#leadLog').innerHTML = Object.values(S.leadEv).reverse().map(e=>`<div><span>${e.label}</span><b>+${e.pts}</b></div>`).join('') || '<div class="note">아직 기록이 없습니다.</div>';
+  $('#lType').textContent = S.pin? `${S.pin.dong}동 ${S.pin.type} · ${S.pin.floor}층` : (S.ptypeTouched? S.ptype : '-');
+  $('#lVisit').textContent = S.booking? `예약 완료 (${S.booking})` : (S.visit? '방문 의향 있음':'-');
+  $('#lFund').textContent = S.plan? `부족 자금 ${S.plan.lo}~${S.plan.hi}` : '-';
+  $('#lSens').textContent = S.sens+'건';
+}
+
+/* chips */
+function bindChips(root=document){
+  root.querySelectorAll('.chips[data-k]').forEach(g=>{
+    if(g._b) return; g._b=1;
+    g.addEventListener('click',e=>{
+      const c=e.target.closest('.chip'); if(!c||c.classList.contains('full')) return;
+      const k=g.dataset.k;
+      if(g.dataset.multi){ c.classList.toggle('on'); }
+      else { g.querySelectorAll('.chip').forEach(x=>x.classList.remove('on')); c.classList.add('on'); }
+      onChip(k,c.dataset.v,c);
+    });
+  });
+}
+function onChip(k,v,c){
+  if(['family','home','budget','pri','pri2'].includes(k)){ S.find[k]=v; }
+  else if(k==='season'||k==='time'){ S[k]=v; renderPano(); }
+  else if(k==='mhome'||k==='mode'){ S[k]=v; renderMap(); }
+  else if(k==='place'){ S.places.has(v)?S.places.delete(v):S.places.add(v); renderMap(); }
+  else if(k==='ptype'){ S.ptype=v; S.ptypeTouched=1; autoPrice(); }
+  else if(k==='pfl'){ S.pfl=v; autoPrice(); }
+  else if(k==='pay'){ S.pay=v; renderPlan(); }
+  else if(k==='msg'){ S.msg=v; renderMatrix(); }
+  else if(k==='day'){ S.day=v; renderSlots(); }
+}
+
+/* ================= ROUTING ================= */
+const VIEWS=['home','about','units','find','see','map','plan','talk','card','ops'];
+function go(v){ location.hash=v; }
+function route(){
+  let v=(location.hash||'#home').slice(1); if(!VIEWS.includes(v)) v='home';
+  document.querySelectorAll('section.view').forEach(s=>s.classList.toggle('on',s.id==='v-'+v));
+  document.querySelectorAll('#tabs a').forEach(a=>a.classList.toggle('on',a.dataset.v===v));
+  const tab=document.querySelector(`#tabs a[data-v="${v}"]`); if(tab) tab.scrollIntoView({block:'nearest',inline:'center'});
+  window.scrollTo({top:0});
+  if(v==='about'){renderAbout();}
+  if(v==='units'){renderUnit();lead('units',5,'평면 정보 확인');}
+  if(v==='see'){renderSite();renderPano();lead('see',10,'조망 시뮬레이터 이용');}
+  if(v==='map'){renderMap();lead('map',8,'생활권 지도 이용');}
+  if(v==='plan'){renderPlan();}
+  if(v==='card'){renderCard();}
+  if(v==='ops'){renderFunnel();renderMatrix();}
+}
+window.addEventListener('hashchange',route);
+
+/* ================= VIEW SCORE ================= */
+function wingDirs(w){ return [w[0], w[1]]; } // e.g. 'SW' -> ['S','W']
+function viewScore(dong,wing,floor){
+  const maxF = 26, r=(floor-1)/(maxF-1);
+  const dirs=wingDirs(wing);
+  let s=0; dirs.forEach(d=>{ const o=OBST[dong][d]; s += (1-o*(1-0.3*r)) * DIRW[d]; });
+  s = s/2 * (0.55+0.45*r);
+  return Math.round(Math.max(5,Math.min(98,s*100)));
+}
+function unitAt(dong,wing,floor){
+  const w=DONGS[dong].wings[wing];
+  if(w.alt && floor>=w.alt.f[0] && floor<=w.alt.f[1]) return {t:w.alt.t,f:w.alt.f};
+  if(dong==102 && (wing==='NE'||wing==='SE') && floor===24) return {t:(wing==='NE'?'게스트하우스':'전망대·전시실'),f:[24,24],special:1};
+  return {t:w.t,f:w.f};
+}
+function wingRange(dong,wing){ const w=DONGS[dong].wings[wing]; const lo=w.alt?w.alt.f[0]:w.f[0]; return [lo, w.f[1]]; }
+
+/* ================= SITE PLAN SVG ================= */
+const WCOL={'84A':'#e2a72e','84B':'#ef8a3c','102A':'#e9d76b','122OA':'#7fb8de'};
+function xWing(cx,cy,dir,len,wd){
+  const dx = dir.includes('E')?1:-1, dy = dir.includes('S')?1:-1;
+  // rotated rect along diagonal
+  const ux=dx/Math.SQRT2, uy=dy/Math.SQRT2, px=-uy, py=ux;
+  const a=[cx+ux*8+px*wd/2, cy+uy*8+py*wd/2], b=[cx+ux*(8+len)+px*wd/2, cy+uy*(8+len)+py*wd/2],
+        c=[cx+ux*(8+len)-px*wd/2, cy+uy*(8+len)-py*wd/2], d=[cx+ux*8-px*wd/2, cy+uy*8-py*wd/2];
+  return [a,b,c,d].map(p=>p.map(n=>n.toFixed(1)).join(',')).join(' ');
+}
+function renderSite(){
+  const svg=$('#siteSvg'); let h='';
+  h+=`<rect x="0" y="0" width="300" height="22" fill="#cfd3cc"/><text x="150" y="15" font-size="10" text-anchor="middle" fill="#45525c">공주종합버스터미널 (북측)</text>`;
+  h+=`<rect x="10" y="28" width="280" height="282" rx="8" fill="#dfe8d3" stroke="#c6d1b9"/>`;
+  h+=`<rect x="138" y="40" width="24" height="250" fill="#ece6da"/><text x="150" y="168" font-size="8" fill="#8a8f84" text-anchor="middle" transform="rotate(-90 150 168)">커뮤니티광장</text>`;
+  h+=`<rect x="0" y="312" width="300" height="18" fill="#c9ccc6"/><text x="150" y="324" font-size="9.5" text-anchor="middle" fill="#45525c">남측 도로 · 금강 방면 ↓</text>`;
+  h+=`<text x="295" y="170" font-size="9" fill="#45525c" text-anchor="end" transform="rotate(90 292 170)">동측 24m 대로</text>`;
+  Object.entries(DONGS).forEach(([dn,d])=>{
+    const cx=78+d.x*144, cy=78+d.y*92;
+    ['NW','NE','SW','SE'].forEach(w=>{
+      const wg=d.wings[w]; const col=WCOL[wg.alt?(S.sel.dong==dn&&S.sel.wing===w&&unitAt(dn,w,S.sel.floor).t==='122OA'?'122OA':wg.t):wg.t];
+      const on = S.sel.dong==dn && S.sel.wing===w;
+      h+=`<polygon class="wing" data-d="${dn}" data-w="${w}" points="${xWing(cx,cy,w,30,17)}" fill="${col}" stroke="${on?'#13202b':'#fff'}" stroke-width="${on?2.4:1}"/>`;
+      if(wg.alt){ h+=`<polygon class="wing" data-d="${dn}" data-w="${w}" points="${xWing(cx,cy,w,13,17)}" fill="${WCOL['122OA']}" opacity=".9" stroke="#fff"/>`; }
+    });
+    h+=`<rect x="${cx-9}" y="${cy-9}" width="18" height="18" fill="#fff" stroke="#c9c2b4"/>`;
+    h+=`<text x="${cx}" y="${cy+3.5}" font-size="9.5" font-weight="700" text-anchor="middle" fill="#13202b">${dn}</text>`;
+  });
+  svg.innerHTML=h;
+  svg.querySelectorAll('.wing').forEach(p=>p.addEventListener('click',()=>{
+    const dn=+p.dataset.d, w=p.dataset.w; const [lo,hi]=wingRange(dn,w);
+    S.sel.dong=dn; S.sel.wing=w; S.sel.floor=Math.min(hi,Math.max(lo,S.sel.floor));
+    syncFloor(); renderSite(); renderPano();
+  }));
+}
+function syncFloor(){
+  const [lo,hi]=wingRange(S.sel.dong,S.sel.wing); const fl=$('#floor');
+  fl.min=lo; fl.max=hi; fl.value=S.sel.floor;
+}
+$('#floor').addEventListener('input',e=>{S.sel.floor=+e.target.value; renderPano(); renderSite();});
+
+/* ================= PANORAMA ================= */
+function rnd(seed){ let s=seed; return ()=>{ s=(s*9301+49297)%233280; return s/233280; }; }
+const SKY={am:['#f6d3ad','#c9dcea'],pm:['#86bde3','#e0f0f8'],ev:['#f19a55','#6c5a91'],nt:['#0d1a2b','#2c3d5e']};
+const HILL={sp:['#8fbf86','#6f9f73'],su:['#4f8a55','#3d6f47'],au:['#c58242','#9b6a3f'],wi:['#b4bfc4','#96a3a9']};
+function renderPano(){
+  const {dong,wing,floor}=S.sel; const u=unitAt(dong,wing,floor);
+  const r=(floor-1)/25, dirs=wingDirs(wing), night=S.time==='nt', dusk=S.time==='ev';
+  const [s1,s2]=SKY[S.time], [h1,h2]=HILL[S.season];
+  const hz = 205 + r*40; // 높을수록 시야가 내려다보임
+  let g=`<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${s2}"/><stop offset="1" stop-color="${s1}"/></linearGradient>
+  <linearGradient id="riv" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${night?'#23344d':'#7fb3c4'}"/><stop offset="1" stop-color="${night?'#142235':'#4f8fa3'}"/></linearGradient></defs>`;
+  g+=`<rect width="1000" height="400" fill="url(#sky)"/>`;
+  if(S.time==='pm'||S.time==='am') g+=`<circle cx="${S.time==='am'?820:620}" cy="${S.time==='am'?120:70}" r="22" fill="#fff7d6" opacity=".9"/>`;
+  if(dusk) g+=`<circle cx="160" cy="${hz-40}" r="30" fill="#ffd28a" opacity=".85"/>`;
+  if(night){ const R=rnd(7); for(let i=0;i<60;i++) g+=`<circle cx="${R()*1000}" cy="${R()*hz*.7}" r="${R()*1.4+.3}" fill="#fff" opacity="${.4+R()*.5}"/>`; g+=`<circle cx="800" cy="70" r="16" fill="#f3efd8"/>`; }
+  // 두 방향을 좌/우 반씩
+  dirs.forEach((d,i)=>{
+    const x0=i*500, R=rnd(dong*13+i*7+d.charCodeAt(0));
+    const o=OBST[dong][d];
+    // 원경 능선
+    let p=`M${x0},${hz} `; for(let x=0;x<=500;x+=25){ const y=hz-40-R()*40-(d==='S'?Math.sin(x/90)*28+18:0); p+=`L${x0+x},${y.toFixed(0)} `;} p+=`L${x0+500},${hz} Z`;
+    g+=`<path d="${p}" fill="${h2}" opacity="${night?.45:.75}"/>`;
+    // 공산성 성곽 (남측)
+    if(d==='S'){ g+=`<path d="M${x0+120},${hz-58} q60,-28 120,-6 q50,-18 110,2" stroke="${night?'#e8d9a8':'#8a7a5c'}" stroke-width="3" fill="none" stroke-dasharray="6 3"/>`;
+      g+=`<rect x="${x0+226}" y="${hz-76}" width="16" height="10" fill="${night?'#e8d9a8':'#7a5f3e'}"/><polygon points="${x0+222},${hz-76} ${x0+234},${hz-84} ${x0+246},${hz-76}" fill="${night?'#c9b47a':'#4f3c28'}"/>`; }
+    // 근경 언덕
+    let q=`M${x0},${hz} `; for(let x=0;x<=500;x+=40){ q+=`L${x0+x},${(hz-12-R()*14).toFixed(0)} `;} q+=`L${x0+500},${hz} Z`;
+    g+=`<path d="${q}" fill="${h1}" opacity="${night?.5:1}"/>`;
+    // 강
+    if(d==='S'||d==='W'){ g+=`<path d="M${x0},${hz+4} C${x0+150},${hz-6} ${x0+330},${hz+16} ${x0+500},${hz+2} L${x0+500},${hz+26+r*20} C${x0+330},${hz+36+r*20} ${x0+150},${hz+18+r*20} ${x0},${hz+30+r*20} Z" fill="url(#riv)"/>`;
+      if(dusk) g+=`<path d="M${x0+120},${hz+12} h120" stroke="#ffcf8a" stroke-width="3" opacity=".6"/>`; }
+    // 시가지
+    const base = (d==='S'||d==='W')? hz+30+r*20 : hz+2;
+    for(let k=0;k<22;k++){ const bw=14+R()*26, bh=(d==='N'&&k%7===3)?18:8+R()*(d==='E'?46:30), bx=x0+R()*480;
+      g+=`<rect x="${bx.toFixed(0)}" y="${(base+40-bh-R()*30+ (1-r)*0).toFixed(0)}" width="${bw.toFixed(0)}" height="${(bh+80).toFixed(0)}" fill="${night?'#22314a':(['#dcd6cb','#c9c3b7','#e6e1d8','#b9b4aa'][k%4])}"/>`;
+      if(night) for(let wn=0;wn<3;wn++) g+=`<rect x="${(bx+3+wn*5).toFixed(0)}" y="${(base+30-bh*0.5).toFixed(0)}" width="2" height="2" fill="#ffd98a" opacity="${R()>.4?.9:.2}"/>`;
+    }
+    if(d==='N'){ g+=`<rect x="${x0+150}" y="${base+18}" width="210" height="30" fill="${night?'#2a3a55':'#c2c9cf'}"/><text x="${x0+255}" y="${base+38}" font-size="13" fill="${night?'#cfd8e6':'#40505c'}" text-anchor="middle">버스터미널</text>`; }
+    if(d==='E'){ g+=`<rect x="${x0}" y="${base+60}" width="500" height="18" fill="${night?'#1a2536':'#8e9399'}"/>`; }
+    // 근경 지면
+    g+=`<rect x="${x0}" y="${base+64}" width="500" height="${400-base}" fill="${night?'#16202d':'#a9b49b'}"/>`;
+    // 인접 동 가림
+    if(o>=.45){ const bw=150+o*170, bx = i===0? x0+500-bw-20 : x0+20, top = 30 + r*170;
+      g+=`<rect x="${bx}" y="${top}" width="${bw}" height="${400-top}" fill="${night?'#1d2a3c':'#e9e5dd'}" stroke="${night?'#0f1824':'#cfc8bb'}"/>`;
+      for(let yy=top+14; yy<400; yy+=22) for(let xx=bx+12; xx<bx+bw-14; xx+=26) g+=`<rect x="${xx}" y="${yy}" width="14" height="10" fill="${night?(Math.random()>.5?'#ffd98a':'#2e3e55'):'#a9bac4'}" opacity=".85"/>`;
+      g+=`<text x="${bx+bw/2}" y="${Math.max(top+28,60)}" font-size="13" text-anchor="middle" fill="${night?'#9fb0c4':'#7a7366'}">단지 내 인접 동</text>`;
+    } else if(o>=.3){ // 광장·조경
+      for(let t=0;t<9;t++){ const tx=x0+40+t*52; g+=`<circle cx="${tx}" cy="${360-r*30}" r="${26-r*10}" fill="${night?'#1b2a22':h2}"/>`; }
+    }
+    // 방향 라벨
+    g+=`<text x="${x0+250}" y="390" font-size="13" font-weight="600" text-anchor="middle" fill="${night?'#e9e3d6':'#13202b'}">${DIRNAME[d]}측 ${i===0?'←':'→'}</text>`;
+  });
+  g+=`<line x1="500" y1="0" x2="500" y2="400" stroke="#13202b" stroke-width="10"/><line x1="0" y1="0" x2="1000" y2="0" stroke="#13202b" stroke-width="12"/><line x1="0" y1="400" x2="1000" y2="400" stroke="#13202b" stroke-width="12"/>`;
+  $('#pano').innerHTML=g;
+
+  // 정보
+  const sc=viewScore(dong,wing,floor);
+  const typeLbl = u.special? u.t : (TYPE[u.t]?TYPE[u.t].name:u.t);
+  $('#seeUnit').textContent=`${dong}동 · ${typeLbl} · ${floor}층`;
+  $('#seeUnitSub').textContent=`${DIRNAME[dirs[0]]}${DIRNAME[dirs[1]]}향 날개 · ${DONGS[dong].note}`;
+  $('#floorLbl').textContent=floor+'층';
+  $('#panoDir').textContent=`${DIRNAME[dirs[0]]}${DIRNAME[dirs[1]]}향 · ${{sp:'봄',su:'여름',au:'가을',wi:'겨울'}[S.season]} ${{am:'아침',pm:'낮',ev:'해질녘',nt:'밤'}[S.time]}`;
+  $('#viewScore').innerHTML=sc+'<small> / 100</small>'; $('#viewMeter').style.width=sc+'%';
+  const blocked=dirs.filter(d=>OBST[dong][d]>=.45), open=dirs.filter(d=>OBST[dong][d]<.3);
+  $('#viewWhy').textContent = `${open.length?open.map(d=>DIRNAME[d]+'측').join('·')+'은 트인 편, ':''}${blocked.length?blocked.map(d=>DIRNAME[d]+'측').join('·')+'은 단지 내 인접 동이 일부 가림. ':''}층이 높을수록 원경이 넓어집니다.`;
+  let see=''; dirs.forEach(d=>{ const o=OBST[dong][d]; const list=SEEMAP[d].filter((x,i)=> i===0 || (r>.25 && o<.45) || (r>.65));
+    see+=`<div style="margin-bottom:6px"><b>${DIRNAME[d]}측</b> ${list.map(x=>`<span class="tag est">${x}</span>`).join('')}${o>=.45?'<span class="tag">인접 동</span>':''}</div>`; });
+  $('#viewSee').innerHTML=see;
+  $('#viewAlt').textContent = sc<55 ? '조망 열위 세대: 평면·생활 동선·커뮤니티(24층 전망대 계획)·가격 근거로 상담합니다.' : '예상 시야 등급 — 상담·개인 리포트에서만 사용하며 광고 문구에는 쓰지 않습니다.';
+  const gEl=document.querySelectorAll('#grades div'); gEl.forEach(x=>x.classList.toggle('on', x.dataset.g===(sc<30?'u':'e')));
+}
+function pinUnit(){
+  const {dong,wing,floor}=S.sel; const u=unitAt(dong,wing,floor);
+  if(u.special){toast('24층은 커뮤니티 공간(계획)입니다. 다른 층을 선택해 주세요.');return;}
+  S.pin={dong,wing,floor,type:u.t,score:viewScore(dong,wing,floor)};
+  if(TYPE[u.t] && u.t!=='122OA'){ S.ptype=u.t; S.pfl= floor<=8?'lo':floor<=17?'mid':'hi'; setChip('ptype',S.ptype); setChip('pfl',S.pfl); autoPrice(); }
+  lead('pin',15,`세대 저장 · ${dong}동 ${u.t} ${floor}층`); toast(`${dong}동 ${u.t} ${floor}층을 내 집 카드에 담았습니다.`);
+}
+function setChip(k,v){ const g=document.querySelector(`.chips[data-k="${k}"]`); if(!g) return; g.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c.dataset.v===v)); }
+
+/* ================= RECOMMEND ================= */
+function recommend(){
+  const f=S.find, budget=+f.budget; const cands=[];
+  Object.entries(DONGS).forEach(([dn,d])=>{
+    ['NW','NE','SW','SE'].forEach(w=>{
+      ['lo','mid','hi'].forEach(b=>{
+        const fl=FLB[b].f; const wg=d.wings[w];
+        let floor = Math.min(wg.f[1], Math.max(wg.f[0], fl)); if(wg.alt && b!=='hi') return; // 오피스텔 구간 제외
+        if(dn==102 && floor===24) floor=23;
+        const t=wg.t; const price=TYPE[t].price*(1+FLB[b].adj);
+        const vs=viewScore(+dn,w,floor);
+        const near = (dn==105||dn==106)?1:(dn==103||dn==104)?.85:.75; // 터미널·상권 접근(가정)
+        const fam=+f.family;
+        let sz = t==='102A'? (fam>=5?1:fam>=4?.7:.3) : (fam>=5?.4:.8);
+        const pr = Math.max(0,1-Math.max(0,price-budget)/0.8);
+        const pv = 1-(price-3.9)/1.5;
+        const W={view:vs/100,move:near,size:sz,price:pv};
+        let s = W[f.pri]*0.55 + W[f.pri2]*0.2 + pr*0.25;
+        if(fam<=2 && t==='102A') s-=.15;
+        if(f.home==='sj' && (dn==105||dn==106)) s+=.06; // 터미널·BRT
+        cands.push({dn:+dn,w,b,floor,t,price,vs,s,near});
+      });
+    });
+  });
+  cands.sort((a,b)=>b.s-a.s);
+  const pick=[]; const used=new Set();
+  for(const c of cands){ if(used.has(c.dn)) continue; pick.push(c); used.add(c.dn); if(pick.length===3) break; }
+  const el=$('#recList'); el.classList.remove('hide'); $('#recEmpty').classList.add('hide');
+  el.innerHTML = pick.map((c,i)=>{
+    const dirs=wingDirs(c.w); const T=TYPE[c.t];
+    const why=[];
+    if(f.pri==='view'||f.pri2==='view') why.push(`조망 지수 ${c.vs} (예상)`);
+    if(f.pri==='move'||f.pri2==='move') why.push(DONGS[c.dn].near);
+    if(f.pri==='size'||f.pri2==='size') why.push(T.py);
+    if(f.pri==='price'||f.pri2==='price') why.push(`가정 분양가 ${fmt(c.price)}`);
+    return `<div class="card rec"><span class="rank">0${i+1}</span>
+      <div class="eyebrow">추천 세대 ${i+1}</div><h3>${c.dn}동 ${T.name} · ${FLB[c.b].n} (${c.floor}층 예시)</h3>
+      <dl class="kv"><dt>평면</dt><dd>${T.py} · ${T.desc}</dd>
+      <dt>향</dt><dd>${DIRNAME[dirs[0]]}${DIRNAME[dirs[1]]}향 날개 · ${DONGS[c.dn].note}</dd>
+      <dt>조망 등급</dt><dd><span class="tag est">예상</span> 지수 ${c.vs}/100</dd>
+      <dt>자금 범위</dt><dd>가정 분양가 ${fmt(c.price)} <span class="tag virt">가상</span> ${c.price>+f.budget+0.05?'· 예산 초과분 플래너 확인':'· 예산 범위 내'}</dd>
+      <dt>추천 근거</dt><dd>${why.join(' · ')}</dd></dl>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn sm" onclick="openSee(${c.dn},'${c.w}',${c.floor})">조망 보기</button>
+        <button class="btn sm ghost" onclick="openPlan('${c.t}','${c.b}',${c.price.toFixed(2)})">자금 진단</button>
+        <button class="btn sm gold" onclick="pickRec(${c.dn},'${c.w}',${c.floor},'${c.t}')">이 세대로 예약</button>
+      </div></div>`;
+  }).join('');
+  renderPins(pick); setSteps(2); lead('find',10,'3분 내 집 찾기 완료');
+}
+const PINPOS={105:[26,23],106:[73,22],104:[26,49],103:[73,50],101:[26,81],102:[73,81]};
+function renderPins(recs){ const m=$('#pinmap'); m.querySelectorAll('.pin').forEach(x=>x.remove());
+  const R={}; (recs||[]).forEach((c,i)=>R[c.dn]=i+1);
+  Object.entries(PINPOS).forEach(([dn,[x,y]])=>{ const d=document.createElement('span'); d.className='pin'+(R[dn]?' rec':(recs&&recs.length?' dim':''));
+    d.style.left=x+'%'; d.style.top=y+'%'; d.textContent=R[dn]?`${R[dn]} · ${dn}동`:dn+'동';
+    d.onclick=()=>{ const c=(recs||[]).find(z=>z.dn==dn); if(c){ openSee(c.dn,c.w,c.floor); } else { const w=Object.keys(DONGS[dn].wings)[2]; openSee(+dn,w,15); } };
+    m.appendChild(d); });
+  $('#pinNote').textContent = recs&&recs.length ? '금색 번호 = 추천 동 · 핀을 누르면 조망 시뮬레이터' : '조건을 고르고 ‘AI 추천 받기’를 눌러 주세요';
+}
+function setSteps(n){ document.querySelectorAll('#steps div').forEach((d,i)=>{ d.className= i+1<n?'done': i+1===n?'on':''; }); }
+function openSee(dn,w,fl){ S.sel={dong:dn,wing:w,floor:fl}; syncFloor(); setSteps(3); go('see'); }
+function openPlan(t,b,p){ S.ptype=t; S.pfl=b; S.ptypeTouched=1; setChip('ptype',t); setChip('pfl',b); $('#pPrice').value=p; setSteps(3); go('plan'); }
+function pickRec(dn,w,fl,t){ S.sel={dong:dn,wing:w,floor:fl}; syncFloor(); S.pin={dong:dn,wing:w,floor:fl,type:t,score:viewScore(dn,w,fl)};
+  if(TYPE[t]){S.ptype=t; setChip('ptype',t); S.pfl=fl<=8?'lo':fl<=17?'mid':'hi'; setChip('pfl',S.pfl); autoPrice();}
+  lead('pin',15,`세대 저장 · ${dn}동 ${t} ${fl}층`); S.visit=true; lead('visitIntent',15,'방문 예약 의향'); setSteps(4); go('card'); }
+
+/* ================= MAP ================= */
+const SITE={x:430,y:215};
+const HOMES={sg:{x:575,y:120,n:'신관동 구축'},ws:{x:640,y:110,n:'월송동'},old:{x:300,y:440,n:'원도심'}};
+const PLACES={
+  term:{n:'공주종합버스터미널',x:430,y:172,real:1,left:1},
+  park:{n:'금강신관공원',x:360,y:300,real:1},
+  gong:{n:'공산성',x:330,y:400,real:1},
+  shop:{n:'신관동 생활 상권',x:520,y:240},
+  school:{n:'초등학교 (예시)',x:470,y:140},
+  mid:{n:'중학교 (예시)',x:650,y:200},
+  acad:{n:'학원가 (예시)',x:540,y:270},
+  hosp:{n:'종합병원 (예시)',x:620,y:250},
+  mart:{n:'대형마트 (예시)',x:470,y:320},
+  mkt:{n:'전통시장 (예시)',x:250,y:430}
+};
+function buildPlaceChips(){ $('#placeChips').innerHTML=Object.entries(PLACES).map(([k,p])=>`<span class="chip ${S.places.has(k)?'on':''}" data-v="${k}">${p.n}</span>`).join(''); $('#placeChips').dataset.k='place'; $('#placeChips').dataset.multi=1; }
+function mins(a,b){ const d=Math.hypot(a.x-b.x,a.y-b.y)*1.35; /*px→m 가정 ×3.2*/ const m=d*3.2; return S.mode==='walk'? Math.max(2,Math.round(m/70)) : Math.max(2,Math.round(m/350)+2); }
+function renderMap(){
+  const H=HOMES[S.mhome]; const brt=$('#brt').checked;
+  let g=`<rect width="800" height="520" fill="#eef0ea"/>`;
+  // 금강
+  g+=`<path d="M0,330 C150,300 260,360 400,345 C540,330 640,380 800,350 L800,395 C640,425 540,375 400,390 C260,405 150,345 0,375 Z" fill="#a9cdd8"/><text x="120" y="352" font-size="14" fill="#3f7280" font-weight="600">금강</text>`;
+  // 도로
+  g+=`<path d="M0,200 L800,190" stroke="#fff" stroke-width="10"/><path d="M480,0 L470,330" stroke="#fff" stroke-width="12"/><path d="M380,520 L420,330" stroke="#fff" stroke-width="9"/>`;
+  g+=`<text x="490" y="20" font-size="11" fill="#8a8f84">24m 대로</text>`;
+  // 생활권 영역
+  g+=`<ellipse cx="520" cy="200" rx="220" ry="120" fill="#dfe6f0" opacity=".55"/><text x="560" y="72" font-size="12" fill="#5b6f8a" text-anchor="middle">신관·월송 생활권 (공주 인구 36.2%)</text>`;
+  g+=`<ellipse cx="300" cy="455" rx="160" ry="60" fill="#efe3d0" opacity=".7"/><text x="300" y="500" font-size="12" fill="#8a6f4a" text-anchor="middle">원도심 (금강 남측)</text>`;
+  if(brt){ g+=`<path d="M430,170 C520,120 640,80 790,30" stroke="#b8914a" stroke-width="4" stroke-dasharray="10 6" fill="none"/><text x="640" y="40" font-size="12" fill="#8a6a2c" font-weight="600">공주~세종 BRT (추진 중 · 운행 시기 미정)</text><text x="760" y="20" font-size="11" fill="#8a6a2c">세종 →</text>`; }
+  // 선
+  S.places.forEach(k=>{ const p=PLACES[k];
+    g+=`<line x1="${H.x}" y1="${H.y}" x2="${p.x}" y2="${p.y}" stroke="#a4462f" stroke-width="1.5" stroke-dasharray="4 4" opacity=".55"/>`;
+    g+=`<line x1="${SITE.x}" y1="${SITE.y}" x2="${p.x}" y2="${p.y}" stroke="#1f5c63" stroke-width="2.4" opacity=".85"/>`; });
+  Object.entries(PLACES).forEach(([k,p])=>{ const on=S.places.has(k);
+    g+=`<circle cx="${p.x}" cy="${p.y}" r="${on?7:5}" fill="${on?'#1f5c63':'#9aa3a8'}" stroke="#fff" stroke-width="2"/><text x="${p.left?p.x-10:p.x+10}" y="${p.y+4}" text-anchor="${p.left?'end':'start'}" font-size="12" fill="${on?'#13202b':'#7b858c'}" font-weight="${on?600:400}">${p.n}</text>`; });
+  g+=`<circle cx="${H.x}" cy="${H.y}" r="9" fill="#a4462f" stroke="#fff" stroke-width="2"/><text x="${H.x+12}" y="${H.y-8}" font-size="12" fill="#a4462f" font-weight="700">지금 집 · ${H.n}</text>`;
+  g+=`<rect x="${SITE.x-18}" y="${SITE.y-14}" width="36" height="28" rx="6" fill="#13202b"/><text x="${SITE.x}" y="${SITE.y+5}" font-size="11" fill="#e9d6ad" text-anchor="middle" font-weight="700">새집</text>`;
+  g+=`<text x="790" y="512" font-size="11" fill="#8a8f84" text-anchor="end">개략도 · 축척 아님 · 위치는 시연용 가정</text><text x="20" y="28" font-size="12" fill="#45525c" font-weight="700">N ↑</text>`;
+  $('#mapSvg').innerHTML=g;
+  let rows='', sumA=0, sumB=0;
+  S.places.forEach(k=>{ const p=PLACES[k]; const a=mins(H,p), b=mins(SITE,p); sumA+=a; sumB+=b; const d=b-a;
+    rows+=`<div class="place-row"><span>${p.n}</span><span>${a}분</span><span><b>${b}분</b></span><span class="${d<=0?'up':'dn'}">${d>0?'+':''}${d}분</span></div>`; });
+  $('#mapRows').innerHTML=rows||'<div class="note" style="padding:10px 0">자주 가는 곳을 골라 주세요.</div>';
+  const diff=sumB-sumA;
+  $('#mapSum').innerHTML = S.places.size? `선택한 ${S.places.size}곳 합계 · 지금 집 <b>${sumA}분</b> → 새집 <b>${sumB}분</b> <span class="${diff<=0?'up':'dn'}">(${diff>0?'+':''}${diff}분)</span> — ${Math.abs(diff)<=S.places.size*3?'<b>생활은 그대로</b>, 새집만 바뀝니다.':(diff<0?'<b>생활 동선이 더 짧아집니다.</b>':'일부 동선이 길어집니다 — 상담 시 대안 경로 안내.')}` : '';
+  S.map={n:S.places.size,a:sumA,b:sumB,home:H.n};
+}
+$('#brt').addEventListener('change',()=>{renderMap(); if($('#brt').checked) lead('brt',3,'BRT 시나리오 확인');});
+function shortForm(){ lead('short',5,'생활 동선 숏폼 요청'); toast('목업: 30초 숏폼은 실제 서비스에서 지도·동선 기반으로 자동 생성됩니다.'); }
+function pinMap(){ renderMap(); lead('mapPin',5,'생활 동선 카드 저장'); toast('생활 동선 비교를 내 집 카드에 담았습니다.'); }
+
+/* ================= PLANNER ================= */
+function autoPrice(){ const T=TYPE[S.ptype]; if(!T||!T.price) return; $('#pPrice').value=(T.price*(1+FLB[S.pfl].adj)).toFixed(2); renderPlan(); }
+$('#pHome').addEventListener('change',e=>{ const v=+e.target.value; $('#pSale').value=v; $('#pLoan').value= v? Math.min(+$('#pLoan').value, v*0.6).toFixed(2):0; renderPlan(); });
+['pSale','pLoan','pPrice'].forEach(id=>$('#'+id).addEventListener('input',renderPlan));
+function renderPlan(){
+  const sale=+$('#pSale').value, loan=+$('#pLoan').value, price=+$('#pPrice').value||0;
+  $('#pSaleLbl').textContent= sale? fmt(sale)+' (범위 ±6%)':'매도 없음'; $('#pLoanLbl').textContent=fmt(loan);
+  const saleLo=sale*0.94, saleHi=sale*1.06, fee=sale*0.004*1.1;
+  const netLo=Math.max(0,saleLo-loan-fee), netHi=Math.max(0,saleHi-loan-fee);
+  const big = S.ptype==='102A'; const taxRate = price<=6 ? (big?0.013:0.011) : 0.033;
+  const tax=price*taxRate, move=0.05, opt=0.15; const total=price+tax+move+opt;
+  const midLoan = S.pay==='loan'? price*0.6:0;
+  const gapHi=Math.max(0,total-netLo), gapLo=Math.max(0,total-netHi);
+  // 대출 활용 시 계약~잔금 전 실부담
+  $('#gapRange').innerHTML = `${won(gapLo)}~${won(gapHi)}<small> 원</small>`;
+  $('#gapNote').textContent = S.pay==='loan' ? `중도금 대출(${won(midLoan)}) 가정 시 입주 전 현금 부담은 계약금 10% + 부대비용 중심. 잔금 시점에 위 금액이 필요합니다.` : '자납 시 계약금·중도금 일정에 맞춰 위 금액을 순차 준비합니다.';
+  $('#netCash').innerHTML = sale? `${won(netLo)}~${won(netHi)}`:'—';
+  // chart
+  const max=Math.max(total,saleHi,1)*1.08, W=560, x0=130; const bx=v=>x0+v/max*W;
+  let c='';
+  const bars=[['기존 집 순현금',netLo,netHi,'#a4462f'],['분양 총액(부대 포함)',total,total,'#1f5c63'],['부족 자금',gapLo,gapHi,'#b8914a']];
+  bars.forEach((b,i)=>{ const y=14+i*50;
+    c+=`<text x="0" y="${y+20}" font-size="13" fill="#2b3a47">${b[0]}</text>`;
+    c+=`<rect x="${x0}" y="${y+4}" width="${Math.max(2,bx(b[1])-x0)}" height="24" rx="4" fill="${b[3]}"/>`;
+    if(b[2]>b[1]) c+=`<rect x="${bx(b[1])}" y="${y+4}" width="${bx(b[2])-bx(b[1])}" height="24" rx="4" fill="${b[3]}" opacity=".35"/>`;
+    c+=`<text x="${bx(b[2])+6}" y="${y+21}" font-size="12.5" fill="#13202b" font-weight="600">${b[1]===b[2]?fmt(b[1]):fmt(b[1])+'~'+fmt(b[2])}</text>`; });
+  $('#planChart').innerHTML=c;
+  $('#planTable').innerHTML=`<tr><th>항목</th><th>금액</th><th>근거</th></tr>
+  <tr><td>가정 분양가 (${S.ptype} · ${FLB[S.pfl].n})</td><td>${fmt(price)}</td><td class="note">경쟁 단지 84형 4.03~4.49억 범위 참고 가정</td></tr>
+  <tr><td>취득세 등</td><td>${won(tax)}</td><td class="note">${(taxRate*100).toFixed(1)}% 단순 가정</td></tr>
+  <tr><td>발코니 확장·옵션</td><td>${won(opt)}</td><td class="note">가정</td></tr>
+  <tr><td>이사·입주 비용</td><td>${won(move)}</td><td class="note">가정</td></tr>
+  <tr class="sum"><td>분양 총액(부대 포함)</td><td>${fmt(total)}</td><td></td></tr>
+  <tr><td>기존 집 매각 비용</td><td>${won(fee)}</td><td class="note">중개보수 0.4%+VAT 가정</td></tr>`;
+  const dep=price*0.1, mid=price*0.6, bal=price*0.3;
+  $('#payTable').innerHTML=`<tr><th>시점</th><th>납부</th><th>${S.pay==='loan'?'고객 현금 부담':'고객 현금 부담(자납)'}</th></tr>
+  <tr><td>계약 시 (계약금 10%)</td><td>${won(dep)}</td><td>${won(dep)}</td></tr>
+  <tr><td>중도금 60% (6회 가정)</td><td>${won(mid)}</td><td>${S.pay==='loan'?'대출 실행 (이자후불)':won(mid)}</td></tr>
+  <tr><td>잔금 30% + 부대비용</td><td>${won(bal+tax+opt+move)}</td><td>${S.pay==='loan'?won(bal+tax+opt+move)+' + 중도금 상환/전환':won(bal+tax+opt+move)}</td></tr>`;
+  S.plan={lo:won(gapLo),hi:won(gapHi),price:fmt(price),type:S.ptype,net:sale?`${won(netLo)}~${won(netHi)}`:'—'};
+  renderLead();
+}
+function planDone(){ lead('plan',20,'갈아타기 진단 완료'); S.visit=true; lead('visitIntent',15,'방문 예약 의향'); go('card'); }
+function pinPlan(){ lead('plan',20,'갈아타기 진단 완료'); toast('자금 진단 결과를 내 집 카드에 담았습니다.'); }
+
+/* ================= CHAT ================= */
+const SRC='건축계획서 2026.07.22 (변경후, 계획 수치)';
+const KB=[
+  {k:['면적','전용','공급면적','계약면적'],a:'84A 전용 84.98㎡·공급 109.63㎡(33.16평), 84B 전용 84.98㎡·공급 110.20㎡(33.34평), 102A 전용 102.98㎡·공급 132.19㎡(39.99평), 오피스텔 122OA 전용 122.84㎡·공급 155.51㎡(47.04평)입니다.',s:SRC+' p.8 분양면적표',tp:1,act:'units'},
+  {k:['방 몇','방이','침실','알파룸','드레스룸','펜트리','구조'],a:'84A는 침실 3·욕실 2에 드레스룸·펜트리·현관창고, 84B는 침실 3에 알파룸이 더해진 구성, 102A는 침실 4·욕실 2입니다. 평면은 ‘평면·커뮤니티’ 화면에서 크게 보실 수 있습니다.',s:SRC+' p.41~44',tp:1,act:'units'},
+  {k:['상가','근린','근생'],a:'지상 1층에 근린생활시설(101~114호, 전용 합계 약 626㎡)이 계획되어 있습니다. 업종·분양 조건은 별도 안내 예정입니다.',s:SRC+' p.8·63~64'},
+  {k:['어린이집','돌봄','경로당','놀이터'],a:'어린이집 399㎡, 돌봄센터 181㎡, 경로당 257㎡, 어린이놀이터 4개소(808㎡)가 계획되어 있습니다.',s:SRC+' p.8'},
+  {k:['세대','규모','몇 세대','동수','층','몇층','몇 층'],a:'공동주택 565세대와 오피스텔 33실, 총 598호실 규모입니다. 6개동, 지하 3층~지상 최고 26층의 X자형 4방향 타워로 계획되어 있습니다.',s:SRC},
+  {k:['타입','평형','84a','84b','102a','평면','몇평','몇 평'],a:'84A 414세대(공급 33.16평), 84B 101세대(공급 33.34평), 102A 50세대(공급 39.99평)로 구성됩니다. 84형 비중이 약 91%입니다.\n102A는 101·102동 남측 전면에 25세대씩 배치되어 있습니다.',s:SRC+' p.7·8',tp:1},
+  {k:['주차'],a:'공동주택 주차는 830대로 세대당 약 1.47대입니다. 업무·근생 포함 총 계획 주차는 925대입니다.',s:SRC+' p.8'},
+  {k:['커뮤니티','편의','피트니스','골프','사우나','도서관','돌봄','게스트','전망대','카페'],a:'주민공동시설은 지하 1층 합계 약 2,496.8㎡로 골프연습장·스크린골프·퍼팅존(521㎡), 사우나 남·여(576㎡), 피트니스·G.X룸(359㎡), 키즈룸&맘카페·북카페(386㎡), 다목적실·독서실(444㎡)이 계획되어 있습니다. 작은도서관·어린이집·돌봄센터·게스트하우스도 별도로 있습니다. 102동 24층에는 전망대·전시실이 계획되어 있습니다.',s:SRC+' p.8 · 배치도'},
+  {k:['조경','공원','녹지','산책'],a:'조경 면적 비율은 26.4%이며 ‘Forest Town’ 조경 계획이 적용됩니다. 단지 중앙에는 커뮤니티광장과 어린이놀이터 4곳이 배치되어 있습니다.',s:SRC},
+  {k:['위치','교통','터미널','버스','brt','세종','역'],a:'단지 북측이 공주종합버스터미널과 인접해 있습니다. 공주~세종 광역 BRT(공주 종합터미널~세종 18.5㎞)가 추진 중이며, 운행 시기는 공식 발표 후 안내드리겠습니다.',s:'건축계획서 배치도 · 국토부 BRT 추진 현황'},
+  {k:['조망','공산성','금강','뷰','전망','보여'],a:'조망은 동·층·향마다 다릅니다. ‘전 세대 조망’처럼 말씀드리지 않고, 고르신 세대의 예상 시야를 시뮬레이터로 보여드립니다. 예상 시야는 실제 조망과 다를 수 있습니다.',s:'조망 등급 원칙 (검증·예상·미확정)',act:'see'},
+  {k:['오피스텔','122'],a:'오피스텔 122OA 33실은 105동 1~17층에 별도로 계획되어 있으며 아파트 청약 대상이 아닙니다. 용도·세금·대출 조건은 개인별 확인이 필요해 상담사가 안내드립니다.',s:SRC,sens:1},
+  {k:['모델하우스','견본주택','방문','예약','보러'],a:'견본주택 방문 예약을 도와드릴게요. ‘내 집 카드·예약’ 화면에서 날짜와 시간을 고르시면 상담사가 사전 배정됩니다.',s:'',act:'card',visit:1},
+];
+const SENS=['분양가','가격','얼마','대출','중도금','이자','세금','취득세','양도','청약 자격','청약자격','가점','전매','계약금','할인','입주 시기','입주시기','언제 입주','분양 일정','발코니','옵션 가격'];
+function addMsg(t,who='bot',src='',cls=''){ const b=$('#chatBody'); const d=document.createElement('div'); d.className=`msg ${who} ${cls}`; d.innerHTML=t.replace(/</g,'&lt;').replace(/\n/g,'<br>')+(src?`<span class="src">근거 · ${src}</span>`:''); b.appendChild(d); b.scrollTop=b.scrollHeight; return d; }
+function flow(n){ document.querySelectorAll('#flow span').forEach((s,i)=>s.classList.toggle('on',i<n)); }
+function answer(q){
+  addMsg(q,'me'); flow(1); const ql=q.toLowerCase();
+  setTimeout(()=>{
+    if(SENS.some(w=>ql.includes(w))){
+      S.sens++; flow(3);
+      const d=addMsg('분양가·대출·세금·계약 조건처럼 공고 전 미확정이거나 개인별 판단이 필요한 내용은 AI가 답하지 않고 상담사가 확인 후 직접 안내드립니다.\n먼저 갈아타기 플래너로 자금 범위를 확인해 두시면 상담이 빨라집니다.','bot','민감 질문 분기 규칙','route');
+      const bt=document.createElement('div'); bt.style.marginTop='8px'; bt.innerHTML='<button class="btn sm gold">상담사 콜백 요청</button> <button class="btn sm ghost">플래너 열기</button>';
+      bt.children[0].onclick=()=>{ lead('callback',20,'상담사 콜백 요청'); flow(5); addMsg('콜백 요청이 접수된 것으로 표시했습니다(목업). 상담사가 고객님의 관심 타입과 자금 진단 결과를 보고 연락드리는 흐름입니다.','bot'); };
+      bt.children[1].onclick=()=>go('plan'); d.appendChild(bt);
+      lead('sens'+S.sens,5,'민감 질문 (상담사 분기)'); flow(4); return;
+    }
+    const hit=KB.find(e=>e.k.some(w=>ql.includes(w)));
+    if(hit){ flow(2); const d=addMsg(hit.a,'bot',hit.s);
+      if(hit.tp){ lead('typeQ',8,'타입 문의'); }
+      if(hit.visit){ S.visit=true; lead('visitIntent',15,'방문 예약 의향'); }
+      if(hit.sens){ S.sens++; }
+      if(hit.act){ const bt=document.createElement('div'); bt.style.marginTop='8px'; bt.innerHTML=`<button class="btn sm">${hit.act==='see'?'조망 시뮬레이터 열기':hit.act==='units'?'평면 보기':'방문 예약하기'}</button>`; bt.firstChild.onclick=()=>go(hit.act); d.appendChild(bt); }
+      lead('q_'+hit.k[0],4,'질문: '+hit.k[0]); flow(4); renderLead(); return; }
+    flow(3);
+    const d=addMsg('확인된 자료 범위에 없는 질문이라 정확한 답을 드리기 어렵습니다. 추측으로 답하지 않고, 상담사 콜백으로 연결해 드릴게요.','bot','미확정 질문 → 콜백','route');
+    lead('unk'+Date.now()%1000,2,'자료 외 질문');
+  },420);
+}
+function initChat(){
+  addMsg('안녕하세요, 공주신관 경남아너스빌(가칭) 분양 컨시어지입니다. 건축계획서 등 확인된 자료 범위에서 24시간 답변드립니다. 무엇이 궁금하세요?','bot');
+  const qs=['84A 면적이 어떻게 돼요?','방 구조 알려줘','몇 세대예요?','102A는 어느 동이에요?','주차는 몇 대예요?','커뮤니티 시설 알려줘','공산성 보이나요?','분양가 얼마예요?','중도금 대출 되나요?','모델하우스 예약할래요'];
+  $('#qr').innerHTML=qs.map(q=>`<button type="button">${q}</button>`).join('');
+  $('#qr').querySelectorAll('button').forEach(b=>b.onclick=()=>answer(b.textContent));
+  $('#chatForm').addEventListener('submit',e=>{e.preventDefault(); const v=$('#chatIn').value.trim(); if(!v) return; $('#chatIn').value=''; answer(v);});
+}
+
+/* ================= CARD & BOOKING ================= */
+const DAYS=(()=>{ const out=[]; const base=new Date(); for(let i=1;out.length<5;i++){ const d=new Date(base); d.setDate(base.getDate()+i); const wd=d.getDay(); if(wd===2) continue; out.push(d);} return out; })();
+const WD='일월화수목금토';
+function renderCard(){
+  const p=S.pin, m=S.map, pl=S.plan;
+  const unit = p? `${p.dong}동 ${TYPE[p.type]?TYPE[p.type].name:p.type} · ${p.floor}층` : '세대 미선택';
+  const dirs = p? wingDirs(p.wing).map(d=>DIRNAME[d]).join('')+'향' : '';
+  $('#hcard').innerHTML=`<div class="eyebrow" style="color:var(--gold2)">MY PANORAMA · 1페이지 내 집 카드</div>
+    <h3 style="margin-top:6px">${unit}</h3><div style="font-size:13px;color:#b9b2a3">${p?dirs+' · '+DONGS[p.dong].note:'조망 시뮬레이터나 3분 내 집 찾기에서 세대를 담아 주세요.'}</div>
+    <div class="row2">
+      <div class="cell"><small>조망 · SEE</small><b>${p?'예상 지수 '+p.score+'/100':'-'}</b><div style="font-size:11px;color:#b9b2a3;margin-top:2px">시뮬레이션 · 예상 시야</div></div>
+      <div class="cell"><small>평면</small><b>${p&&TYPE[p.type]?TYPE[p.type].py:'-'}</b><div style="font-size:11px;color:#b9b2a3;margin-top:2px">${p&&TYPE[p.type]?TYPE[p.type].desc:''}</div></div>
+      <div class="cell"><small>생활 · LIVE</small><b>${m&&m.n?`${m.n}곳 ${m.a}분 → ${m.b}분`:'-'}</b><div style="font-size:11px;color:#b9b2a3;margin-top:2px">${m?m.home+' 기준 · 가상 산출':''}</div></div>
+      <div class="cell"><small>자금 · PLAN</small><b>${pl?`부족 ${pl.lo}~${pl.hi}`:'-'}</b><div style="font-size:11px;color:#b9b2a3;margin-top:2px">${pl?`${pl.type} 가정 분양가 ${pl.price} · 가상`:''}</div></div>
+    </div>
+    ${p&&TYPE[p.type]?`<img src="img/${TYPE[p.type].img}.jpg" alt="평면도" style="width:100%;margin-top:14px;border-radius:10px;background:#fff">`:''}
+    <div style="margin-top:16px;font-size:11.5px;color:#b9b2a3">본 카드는 2026.07 건축계획 기준 시뮬레이션 목업이며 실제 조망·분양 조건과 다를 수 있습니다. 대출·세금은 상담사 확인 후 안내.</div>`;
+  $('#dayChips').innerHTML=DAYS.map((d,i)=>`<span class="chip ${S.day==i?'on':''}" data-v="${i}">${d.getMonth()+1}/${d.getDate()} (${WD[d.getDay()]})</span>`).join('');
+  if(S.day===null){S.day='0'; $('#dayChips').firstChild.classList.add('on');}
+  renderSlots();
+  const ag = p&&p.type==='102A'?'대형 평형 전담 상담사': (pl?'자금 상담 전담 상담사':'신관권 교체수요 전담 상담사');
+  $('#agent').innerHTML=`<b>${ag}</b> 사전 배정 · 고객님의 내 집 카드를 미리 확인하고 상담을 시작합니다.`;
+}
+function renderSlots(){
+  const times=['10:00','11:00','13:00','14:00','15:00','16:00']; const R=rnd(+S.day+3);
+  $('#slots').innerHTML=times.map(t=>{ const full=R()<.25; return `<div class="slot ${full?'full':''} ${S.slot===t&&!full?'on':''}" data-t="${t}">${t}${full?'<br><small>마감</small>':''}</div>`; }).join('');
+  $('#slots').querySelectorAll('.slot').forEach(s=>s.onclick=()=>{ if(s.classList.contains('full')) return; S.slot=s.dataset.t; renderSlots(); });
+}
+function book(){
+  if(!S.slot){toast('시간을 선택해 주세요.');return;}
+  const d=DAYS[+S.day]; S.booking=`${d.getMonth()+1}/${d.getDate()}(${WD[d.getDay()]}) ${S.slot}`;
+  lead('book',25,'견본주택 방문 예약'); setSteps(4);
+  const el=$('#booked'); el.classList.remove('hide'); el.innerHTML=`<b>예약 완료(목업)</b> · ${S.booking} 견본주택 방문. 내 집 카드와 상담사 배정 정보가 함께 전달되는 흐름입니다. 실제로 예약·전송되지 않습니다.`;
+  renderLead();
+}
+function cardText(){ const p=S.pin,m=S.map,pl=S.plan; return `[MY PANORAMA 내 집 카드 · 목업]\n세대: ${p?`${p.dong}동 ${p.type} ${p.floor}층 (예상 조망 지수 ${p.score})`:'미선택'}\n생활: ${m&&m.n?`${m.n}곳 ${m.a}분→${m.b}분 (가상)`:'-'}\n자금: ${pl?`부족 ${pl.lo}~${pl.hi} (가정 분양가 ${pl.price})`:'-'}\n방문: ${S.booking||'미예약'}\n※ 2026.07 건축계획 기준 시뮬레이션, 실제와 다를 수 있음`; }
+function sendKakao(){ lead('kakao',5,'내 집 카드 카카오 수신'); toast('목업: 실제 서비스에서는 카카오 알림톡으로 카드가 전송됩니다.'); }
+async function copyCard(){ try{ await navigator.clipboard.writeText(cardText()); toast('카드 내용을 복사했습니다.'); }catch(e){ toast('복사가 지원되지 않는 환경입니다.'); } }
+
+/* ================= OPS ================= */
+function renderFunnel(){
+  const st=[['광고 유입',10000],['유효리드',500],['방문 예약',150],['실제 방문',105],['청약',31],['계약',12]];
+  $('#funnel').innerHTML=st.map((s,i)=>{ const w=Math.max(6,Math.sqrt(s[1]/10000)*100); const cv=i?Math.round(s[1]/st[i-1][1]*100)+'%':'';
+    return `<div class="st"><span>${s[0]}</span><div><div class="b" style="width:${w}%">${s[1].toLocaleString()}</div></div><span class="note">${cv?'전환 '+cv:''}</span></div>`; }).join('');
+  const sp=+$('#spend').value; $('#spendLbl').textContent=sp.toLocaleString()+'만원 (가정)';
+  $('#kCpl').textContent=Math.round(sp*10000/500).toLocaleString()+'원'; $('#kCac').textContent=Math.round(sp/12).toLocaleString()+'만원';
+}
+$('#spend').addEventListener('input',renderFunnel);
+const MX={}; (()=>{ const R=rnd(11); for(let m=0;m<3;m++) for(let t=0;t<3;t++) for(let f=0;f<4;f++){ const x=R(); MX[`${m}-${t}-${f}`]= x<.08?'win':x<.3?'test':x<.38?'off':'idle'; } })();
+function renderMatrix(){
+  const T=['신관권 교체수요','공주 내 상향 이동','세종 연계 수요'], F=['숏폼 영상','피드 이미지','검색 광고','지역 생활 광고'];
+  const lab={idle:'대기',test:'테스트',win:'확대',off:'교체'}; const order=['idle','test','win','off'];
+  let h=`<div class="h"></div>`+F.map(f=>`<div class="h">${f}</div>`).join('');
+  T.forEach((t,ti)=>{ h+=`<div class="h" style="text-align:left">${t}</div>`; F.forEach((f,fi)=>{ const k=`${S.msg}-${ti}-${fi}`; h+=`<div class="c ${MX[k]}" data-k="${k}" style="cursor:pointer">${lab[MX[k]]}</div>`; }); });
+  $('#matrix').innerHTML=h;
+  $('#matrix').querySelectorAll('.c').forEach(c=>c.onclick=()=>{ const k=c.dataset.k; MX[k]=order[(order.indexOf(MX[k])+1)%4]; renderMatrix(); });
+  $('#mCount').textContent=Object.values(MX).filter(v=>v==='test'||v==='win').length+' / 36';
+}
+
+/* ================= IMAGES / ABOUT / UNITS ================= */
+function heroMode(n,b){ document.querySelectorAll('.hero .himg').forEach((im,i)=>im.style.opacity=i===n?1:0);
+  b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
+  $('#heroCap').textContent=['분양 홈페이지 메인 이미지 · CG 연출로 실제 조망과 다를 수 있음','건축계획서 조감도(변경후, 2026.07) · 인허가·분양 단계에서 변경 가능','야간 조감도(건축계획서 p.4, 변경전 안) · 분위기 참고용'][n]; }
+function lbOpen(src,cap){ $('#lbImg').src=src; $('#lbCap').textContent=cap||''; $('#lb').classList.add('on'); }
+function renderViews(id){ $(id).innerHTML=VIEWSHOT.map(v=>`<figure class="fig" onclick="lbOpen('img/${v.img}.jpg','${v.t} — ${v.d} · 건축계획서 경관 시뮬레이션')"><img src="img/${v.img}.jpg" alt="${v.t} 바라본 단지 경관 시뮬레이션"><figcaption><b>${v.t}</b>${v.d}</figcaption></figure>`).join(''); }
+function renderAbout(){
+  const rows=[['동','위치','84A','84B','102A','오피스텔','합계','특징']];
+  const D={101:[74,0,25,0,'남서 · 남측 전면','102A 남서 날개, 공개공지-1 인접'],102:[70,0,25,0,'남동 · 남측 전면','24층 게스트하우스·전망대&전시실(계획)'],103:[75,25,0,0,'동측 · 24m 대로','커뮤니티광장·지하주차장 출입구 인접'],104:[77,25,0,0,'서측','커뮤니티광장·어린이놀이터-3 인접'],105:[43,26,0,33,'북서 · 터미널','오피스텔 1~17층, 84A 18~26층'],106:[75,25,0,0,'북동 · 터미널','공주종합버스터미널 바로 앞']};
+  let h='<tr><th>동</th><th style="text-align:left">위치</th><th>84A</th><th>84B</th><th>102A</th><th>오피스텔</th><th>합계</th><th style="text-align:left">특징</th></tr>'; const tot=[0,0,0,0];
+  [101,102,103,104,105,106].forEach(d=>{const r=D[d]; r.slice(0,4).forEach((v,i)=>tot[i]+=v);
+    h+=`<tr><td><b>${d}동</b></td><td style="text-align:left">${r[4]}</td><td>${r[0]||'-'}</td><td>${r[1]||'-'}</td><td>${r[2]||'-'}</td><td>${r[3]||'-'}</td><td><b>${r[0]+r[1]+r[2]+r[3]}</b></td><td style="text-align:left" class="note">${r[5]}</td></tr>`;});
+  h+=`<tr class="sum"><td>합계</td><td></td><td>${tot[0]}</td><td>${tot[1]}</td><td>${tot[2]}</td><td>${tot[3]}</td><td>${tot.reduce((a,b)=>a+b)}</td><td></td></tr>`;
+  $('#dongTable').innerHTML=h;
+  const F=[['골프연습장','521.54㎡','스크린골프·퍼팅존'],['사우나','575.65㎡','남·여 분리'],['피트니스','359.04㎡','G.X ROOM 포함'],['키즈·북·맘카페','385.70㎡','아이와 부모'],['다목적실 1·2','443.70㎡','독서실 남·여'],['작은도서관','356.25㎡','법정 33㎡ 이상'],['어린이집','399.17㎡',''],['돌봄센터','180.51㎡',''],['경로당','257.48㎡',''],['게스트하우스','176.06㎡','102동 24층'],['전시실·전망대','84.48㎡','102동 24층'],['어린이놀이터','808.02㎡','4개소']];
+  $('#facList').innerHTML=F.map(f=>`<div><b>${f[0]}</b>${f[1]}<br><span>${f[2]}</span></div>`).join('');
+}
+let UT='84A';
+function renderUnit(){
+  $('#ttabs').innerHTML=Object.entries(TYPE).map(([k,t])=>`<button class="${k===UT?'on':''}" data-t="${k}"><b>${k}</b><small>${t.n} · ${t.supp?'공급 '+t.supp+'평':''}</small></button>`).join('');
+  $('#ttabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{UT=b.dataset.t;renderUnit();});
+  const t=TYPE[UT];
+  $('#unitImg').src=`img/${t.img}.jpg`; $('#unitFig').onclick=()=>lbOpen(`img/${t.img}.jpg`,`${UT} TYPE 평면도 · 건축계획서`);
+  $('#unitCap').textContent=`${UT} TYPE 평면도 · 건축계획서(2026.07) · 클릭하면 크게 보기`;
+  $('#unitInt').src=`img/${t.int}.jpg`;
+  $('#unitEyebrow').textContent= UT==='122OA'?'OFFICETEL':'APARTMENT';
+  $('#unitTitle').textContent=`${t.name} · 공급 ${t.supp}평`;
+  $('#unitDesc').textContent=t.lead;
+  $('#unitSpec').innerHTML=`<tr><th>전용면적</th><td>${t.ex}㎡ (${t.exp}평)</td></tr><tr><th>공급면적</th><td>${t.sup}㎡ (${t.supp}평)</td></tr><tr><th>계약면적</th><td>${t.con}㎡ (${t.conp}평)</td></tr><tr><th>${UT==='122OA'?'호실수':'세대수'}</th><td>${t.n}${t.ratio!=='—'?' · 공동주택의 '+t.ratio:''}</td></tr>`;
+  $('#unitFeat').innerHTML=t.feat.map(f=>`<li>${f}</li>`).join('');
+  $('#unitWhere').innerHTML=t.where.split(' · ').map(x=>`<span class="tag" style="margin:3px 4px 3px 0">${x}</span>`).join('');
+  const seeBtn = UT==='122OA'? '' : `<button class="btn sm" onclick="unitSee('${UT}')">이 타입 조망 보기</button><button class="btn sm ghost" onclick="openPlan('${UT}','mid',${(t.price).toFixed(2)})">자금 진단</button>`;
+  $('#unitBtns').innerHTML= seeBtn + `<button class="btn sm ghost" onclick="go('talk')">상담 문의</button>`;
+  S.ptypeTouched=1; S.lastType=UT; renderLead();
+}
+function unitSee(t){ const m={'84A':[102,'SE',18],'84B':[106,'SE',15],'102A':[101,'SW',18]}[t]; S.sel={dong:m[0],wing:m[1],floor:m[2]}; syncFloor(); go('see'); }
+
+/* ================= INIT ================= */
+buildPlaceChips(); bindChips(); renderViews('#homeViews'); renderViews('#seeViews'); renderPins([]); initChat(); syncFloor(); renderPlan(); renderLead(); route();
+</script>
+</body>
+</html>
